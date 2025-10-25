@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
+import RichTextEditorClient from "./rich-text-editor-client"
 
 interface AddRecipeModalProps {
   isOpen: boolean
@@ -28,7 +29,7 @@ export default function AddRecipeModal({ isOpen, onClose, onAdd }: AddRecipeModa
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-background rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <div className="bg-background rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border sticky top-0 bg-background">
           <h2 className="text-lg font-semibold text-foreground">New Recipe</h2>
@@ -67,12 +68,13 @@ export default function AddRecipeModal({ isOpen, onClose, onAdd }: AddRecipeModa
 
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">Recipe Content</label>
-            <textarea
-              placeholder="Enter your recipe details, ingredients, and instructions..."
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="w-full h-48 px-3 py-2 bg-secondary text-foreground placeholder-muted-foreground rounded-lg focus:outline-none focus:ring-1 focus:ring-foreground resize-none"
-            />
+            <div className="border border-border rounded-lg overflow-hidden">
+              <RichTextEditorClient
+                value={content}
+                onChange={setContent}
+                placeholder="Enter your recipe details, ingredients, and instructions..."
+              />
+            </div>
           </div>
 
           <div className="flex gap-2 pt-4">

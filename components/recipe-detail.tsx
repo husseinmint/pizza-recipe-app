@@ -140,19 +140,22 @@ export default function RecipeDetail({
           </div>
           {isEditing ? (
             <div className="space-y-2">
-              <textarea
-                value={editedContent}
-                onChange={(e) => setEditedContent(e.target.value)}
-                className="w-full h-48 p-3 bg-secondary text-foreground rounded-lg focus:outline-none focus:ring-1 focus:ring-foreground resize-none"
-              />
+              <div className="border border-border rounded-lg overflow-hidden">
+                <RichTextEditorClient
+                  value={editedContent}
+                  onChange={setEditedContent}
+                  placeholder="Edit your recipe..."
+                />
+              </div>
               <Button onClick={handleSave} className="w-full bg-foreground hover:bg-foreground/90 text-background">
                 Save Changes
               </Button>
             </div>
           ) : (
-            <div className="bg-secondary p-4 rounded-lg whitespace-pre-wrap text-foreground text-sm leading-relaxed">
-              {recipe.content}
-            </div>
+            <div 
+              className="bg-secondary p-4 rounded-lg text-foreground text-sm leading-relaxed prose prose-sm max-w-none prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-pre:bg-background prose-blockquote:text-foreground prose-li:text-foreground prose-table:text-foreground prose-th:text-foreground prose-td:text-foreground"
+              dangerouslySetInnerHTML={{ __html: recipe.content }}
+            />
           )}
         </div>
 
