@@ -28,8 +28,8 @@ export default function AddRecipeModal({ isOpen, onClose, onAdd }: AddRecipeModa
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-background rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2">
+      <div className="bg-background rounded-lg shadow-lg w-full h-full max-h-[95vh] flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border sticky top-0 bg-background">
           <h2 className="text-lg font-semibold text-foreground">New Recipe</h2>
@@ -39,36 +39,37 @@ export default function AddRecipeModal({ isOpen, onClose, onAdd }: AddRecipeModa
         </div>
 
         {/* Content */}
-        <div className="p-4 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Recipe Name</label>
-            <input
-              type="text"
-              placeholder="e.g., Classic Margherita"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 bg-secondary text-foreground placeholder-muted-foreground rounded-lg focus:outline-none focus:ring-1 focus:ring-foreground"
-            />
+        <div className="flex-1 flex flex-col p-4 space-y-4 min-h-0">
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-foreground mb-2">Recipe Name</label>
+              <input
+                type="text"
+                placeholder="e.g., Classic Margherita"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-3 py-2 bg-secondary text-foreground placeholder-muted-foreground rounded-lg focus:outline-none focus:ring-1 focus:ring-foreground"
+              />
+            </div>
+            <div className="w-48">
+              <label className="block text-sm font-medium text-foreground mb-2">Category</label>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full px-3 py-2 bg-secondary text-foreground rounded-lg focus:outline-none focus:ring-1 focus:ring-foreground"
+              >
+                <option value="Pizza">Pizza</option>
+                <option value="Dough">Dough</option>
+                <option value="Sauce">Sauce</option>
+                <option value="Toppings">Toppings</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Category</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-3 py-2 bg-secondary text-foreground rounded-lg focus:outline-none focus:ring-1 focus:ring-foreground"
-            >
-              <option value="Pizza">Pizza</option>
-              <option value="Dough">Dough</option>
-              <option value="Sauce">Sauce</option>
-              <option value="Toppings">Toppings</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          <div>
+          <div className="flex-1 flex flex-col min-h-0">
             <label className="block text-sm font-medium text-foreground mb-2">Recipe Content</label>
-            <div className="border border-border rounded-lg overflow-hidden">
+            <div className="flex-1 border border-border rounded-lg overflow-hidden min-h-0">
               <RichTextEditorClient
                 value={content}
                 onChange={setContent}
