@@ -1,34 +1,35 @@
-"use client"
-
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react';
 
 export function useLocalStorage<T>(key: string, initialValue: T) {
-  const [isHydrated, setIsHydrated] = useState(false)
-  const [storedValue, setStoredValue] = useState<T>(initialValue)
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [storedValue, setStoredValue] = useState<T>(initialValue);
 
   useEffect(() => {
-    setIsHydrated(true)
+    setIsHydrated(true);
     try {
-      const item = window.localStorage.getItem(key)
+      const item = window.localStorage.getItem(key);
       if (item) {
-        setStoredValue(JSON.parse(item))
+        setStoredValue(JSON.parse(item));
       }
     } catch (error) {
-      console.error(`Error reading localStorage key "${key}":`, error)
+      console.error("Error reading from localStorage", error);
     }
-  }, [key])
+  }, [key]);
 
-  const setValue = (value: T | ((val: T) => T)) => {
+  const setValue = useCallback((value: T | ((val: T) => T)) => {
+    if (!isHydrated) {
+      console.warn("Attempted to set localStorage before hydration.");
+      return;
+    }
     try {
-      const valueToStore = value instanceof Function ? value(storedValue) : value
-      setStoredValue(valueToStore)
-      if (isHydrated) {
-        window.localStorage.setItem(key, JSON.stringify(valueToStore))
-      }
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
     } catch (error) {
-      console.error(`Error setting localStorage key "${key}":`, error)
+      console.error("Error writing to localStorage", error);
     }
-  }
+  }, [key, isHydrated, storedValue]);
 
-  return [storedValue, setValue] as const
+  return [storedValue, setValue] as const;
 }
