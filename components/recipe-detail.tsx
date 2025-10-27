@@ -152,8 +152,25 @@ export default function RecipeDetail({
               </Button>
             </div>
           ) : (
-            <div 
-              className="bg-secondary p-4 rounded-lg text-foreground text-sm leading-relaxed prose prose-sm max-w-none prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-pre:bg-background prose-blockquote:text-foreground prose-li:text-foreground prose-table:text-foreground prose-th:text-foreground prose-td:text-foreground"
+            <div
+              className="bg-secondary p-4 rounded-lg text-foreground max-w-none text-[15px] leading-relaxed
+              [&_*]:text-foreground
+              [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mt-2 [&_h1]:mb-3
+              [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:mt-4 [&_h2]:mb-2
+              [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mt-3 [&_h3]:mb-1.5
+              [&_p]:my-3
+              [&_ul]:list-disc [&_ul]:ml-5 [&_ul_li]:my-1
+              [&_ol]:list-decimal [&_ol]:ml-5 [&_ol_li]:my-1
+              [&_blockquote]:border-l-4 [&_blockquote]:border-border [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:my-3
+              [&_strong]:font-semibold
+              [&_em]:italic
+              [&_hr]:my-4 [&_hr]:border-border
+              [&_code]:bg-background [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded
+              [&_pre]:bg-background [&_pre]:p-3 [&_pre]:rounded [&_pre]:overflow-auto
+              [&_table]:w-full [&_table]:text-sm [&_table]:border-collapse
+              [&_th]:font-semibold [&_th]:border-b [&_th]:border-border [&_th]:py-2 [&_th]:pr-3
+              [&_td]:border-b [&_td]:border-border [&_td]:py-2 [&_td]:pr-3
+              [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded"
               dangerouslySetInnerHTML={{ __html: recipe.content }}
             />
           )}
