@@ -112,6 +112,7 @@ export default function Home() {
   const [isClient, setIsClient] = useState(false)
   const [isCreatingNote, setIsCreatingNote] = useState(false)
   const [newNoteContent, setNewNoteContent] = useState("")
+  const [saucesLoaded, setSaucesLoaded] = useState(false)
   const [newNoteTags, setNewNoteTags] = useState<string[]>([])
   const [showNoteForm, setShowNoteForm] = useState(false)
   const [editingNote, setEditingNote] = useState<{ id: number; title: string; content: string; template: NoteTemplate } | null>(null)
@@ -121,6 +122,9 @@ export default function Home() {
 
   useEffect(() => {
     setIsClient(true)
+    
+    // تحميل الصلصات تلقائياً عند فتح التطبيق
+    loadSauceData()
     
     // Listen for note form events from RecipeDetail
     const handleOpenNoteForm = (event: CustomEvent) => {
@@ -448,6 +452,40 @@ export default function Home() {
         }
       }
       reader.readAsText(file)
+    }
+  }
+
+  const loadSauceData = async () => {
+    if (saucesLoaded) return // تجنب التحميل المتكرر
+    
+    try {
+      const response = await fetch('/sauce.json')
+      const data = await response.json()
+      
+      if (data.recipes) {
+        // تحويل البيانات من sauce.json إلى التنسيق المطلوب
+        const convertedRecipes = data.recipes.map((recipe: any) => ({
+          ...recipe,
+          name: recipe.title, // للتوافق مع الكود القديم
+          imageUrl: recipe.image, // للتوافق مع الكود القديم
+          notes: recipe.notes || [],
+          isFavorite: false,
+          viewCount: 0,
+          lastViewed: undefined
+        }))
+        
+        // دمج الصلصات مع الوصفات الموجودة
+        setRecipes(prevRecipes => {
+          const existingIds = new Set(prevRecipes.map(r => r.id))
+          const newSauces = convertedRecipes.filter((recipe: any) => !existingIds.has(recipe.id))
+          return [...newSauces, ...prevRecipes]
+        })
+        
+        setSaucesLoaded(true)
+        console.log(`تم تحميل ${convertedRecipes.length} وصفة صلصة بنجاح!`)
+      }
+    } catch (error) {
+      console.error('خطأ في تحميل بيانات الصلصات:', error)
     }
   }
 

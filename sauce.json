@@ -1,0 +1,857 @@
+{
+    "recipes": [
+      {
+        "id": 1,
+        "title": "صوص كريمة الفستق الإيطالي (Pistachio Pesto Base)",
+        "description": "قاعدة بيضاء جورميه غنية ومخملية، مثالية للبيتزا النابولية الفاخرة، خاصة مع المورتاديلا والجبن البوراتا.",
+        "content": "يتميز صوص كريمة الفستق بنكهته الحلوة والمالحة المتوازنة وقوامه الكثيف الذي يجعله بديلاً رائعاً لصوص الطماطم التقليدي. يُستخدم نيئاً ويُضاف إليه الجبن الطري بعد الخبز لتعزيز النكهة.",
+        "image": "/images/pistachio_pesto_base.jpg",
+        "prepTime": 10,
+        "cookTime": 0,
+        "servings": 3,
+        "difficulty": "easy",
+        "category": "pizza",
+        "cuisine": "italian",
+        "ingredients": [
+          { "name": "فستق حلبي غير مملح (مقشر)", "amount": "100", "unit": "جرام" },
+          { "name": "زيت زيتون بكر ممتاز", "amount": "50", "unit": "جرام" },
+          { "name": "جبن بيكورينو أو بارميزان مبشور", "amount": "30", "unit": "جرام" },
+          { "name": "أوراق ريحان طازج", "amount": "15", "unit": "جرام" },
+          { "name": "ثوم", "amount": "5", "unit": "جرام" },
+          { "name": "ملح وفلفل أسود", "amount": "0", "unit": "حسب الرغبة" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "ضع الفستق، الجبن، الثوم، والريحان في محضرة الطعام.", "time": 1 },
+          { "step": 2, "description": "ابدأ بالخفق وأضف زيت الزيتون تدريجياً حتى يصبح الصوص ناعماً لكن مع بعض الحبيبات.", "time": 3 },
+          { "step": 3, "description": "تبّل الصوص بالملح والفلفل حسب الذوق. يُستخدم بارداً أو بدرجة حرارة الغرفة كقاعدة للبيتزا.", "time": 1 }
+        ],
+        "tags": ["بيستو", "فستق", "قاعدة بيضاء", "جورميه"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "حلو، مالح، عشبي، غني",
+        "usage": "قاعدة بيضاء (Base Bianca) للبيتزا الفاخرة",
+        "suggestedToppings": ["مورتاديلا (Mortadella)", "جبنة سترشاتيلا (Stracciatella)", "فستق مجروش"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 2,
+        "title": "صوص كريمة الغورغونزولا (Gorgonzola Cream Base)",
+        "description": "صوص نفاذ وكريمي يعتمد على جبنة الغورغونزولا الزرقاء، مثالي للحم المقدد والكمثرى (الإجاص).",
+        "content": "هذا الصوص هو جوهر البيتزا البيضاء الغنية. نكهته المالحة والحادة تتوازن بشكل مدهش مع حلاوة البصل المكرمل أو الفواكه مثل الكمثرى.",
+        "image": "/images/gorgonzola_cream_base.jpg",
+        "prepTime": 5,
+        "cookTime": 10,
+        "servings": 3,
+        "difficulty": "easy",
+        "category": "pizza",
+        "cuisine": "italian",
+        "ingredients": [
+          { "name": "جبنة غورغونزولا دولتشي", "amount": 100, "unit": "جرام" },
+          { "name": "كريمة طبخ طازجة", "amount": 100, "unit": "جرام" },
+          { "name": "زبدة غير مملحة", "amount": 15, "unit": "جرام" },
+          { "name": "جبن بارميزان مبشور", "amount": 5, "unit": "جرام" },
+          { "name": "فلفل أسود", "amount": 0, "unit": "رشة" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "ذوّب الزبدة في قدر صغير على نار هادئة.", "time": 1 },
+          { "step": 2, "description": "أضف كريمة الطبخ وسخنها دون أن تغلي.", "time": 2 },
+          { "step": 3, "description": "أضف جبنة الغورغونزولا المقطعة وحرك حتى تذوب تماماً ويصبح الصوص ناعماً ومتجانساً.", "time": 5 },
+          { "step": 4, "description": "تبّل بالبارميزان والفلفل الأسود. يُستخدم دافئاً.", "time": 2 }
+        ],
+        "tags": ["غورغونزولا", "جبن أزرق", "قاعدة بيضاء", "كريمي"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "نفاذ، مالح، كريمي، حاد",
+        "usage": "قاعدة بيضاء للبيتزا (Base Bianca)",
+        "suggestedToppings": ["لحم مقدد (Speck)", "شرائح كمثرى (إجاص)", "موزاريلا دي بوفالا"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 3,
+        "title": "صوص كريمة الكمأة (Truffle Cream Base)",
+        "description": "قاعدة بيضاء فاخرة بنكهة الكمأة (الترافل) الترابية القوية، تُستخدم بكمية قليلة.",
+        "content": "يُعد هذا الصوص من أفخم قواعد البيتزا. يعتمد على جبن الريكوتا أو الماسكربوني لتوفير قوام كريمي محايد يحمل نكهة زيت الكمأة المركزة.",
+        "image": "/images/truffle_cream_base.jpg",
+        "prepTime": 5,
+        "cookTime": 0,
+        "servings": 3,
+        "difficulty": "easy",
+        "category": "pizza",
+        "cuisine": "italian",
+        "ingredients": [
+          { "name": "جبنة ريكوتا أو ماسكربوني", "amount": 100, "unit": "جرام" },
+          { "name": "زيت كمأة أبيض (White Truffle Oil)", "amount": 10, "unit": "جرام" },
+          { "name": "جبن بارميزان مبشور", "amount": 20, "unit": "جرام" },
+          { "name": "زيت زيتون بكر ممتاز", "amount": 5, "unit": "جرام" },
+          { "name": "ملح وفلفل أبيض", "amount": 0, "unit": "حسب الرغبة" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اخلط الريكوتا/الماسكربوني مع زيت الزيتون حتى يصبح القوام ناعماً.", "time": 2 },
+          { "step": 2, "description": "أضف زيت الكمأة والبارميزان واخلط بلطف حتى يتجانس.", "time": 2 },
+          { "step": 3, "description": "تبّل بالملح والفلفل. يُستخدم بارداً كطبقة رقيقة.", "time": 1 }
+        ],
+        "tags": ["كمأة", "ترافل", "قاعدة بيضاء", "فاخر"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "ترابي، مالح، غني، فاخر",
+        "usage": "قاعدة بيضاء للبيتزا (Base Bianca) بكميات قليلة",
+        "suggestedToppings": ["بريسولا (Bresaola)", "فطر (مشروم) سوتيه", "موزاريلا طازجة"],
+        "notes": [
+          {
+            "id": "note-1",
+            "title": "نصيحة مهمة",
+            "content": "أضف بضع قطرات من زيت الكمأة النيئ على البيتزا بعد خروجها من الفرن لتعزيز الرائحة.",
+            "template": {
+              "id": "tip",
+              "name": "نصيحة",
+              "type": "tip",
+              "icon": null,
+              "bgColor": "bg-blue-50 dark:bg-blue-900/30",
+              "borderColor": "border-blue-200 dark:border-blue-700",
+              "textColor": "text-blue-700 dark:text-blue-300",
+              "iconColor": "text-blue-500 dark:text-blue-400"
+            },
+            "createdAt": "2024-01-15T10:30:00Z"
+          }
+        ],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 4,
+        "title": "صوص الطماطم الأصفر (Pomodorino Giallo Base)",
+        "description": "بديل خفيف وأقل حموضة لصوص الطماطم التقليدي، يتميز بنكهة حلوة وفاكهية.",
+        "content": "يعتمد هذا الصوص على الطماطم الصفراء (مثل بيينولو)، وهو مثالي لمن يفضلون قاعدة طماطم خفيفة. لا يُطبخ مسبقاً للحفاظ على نكهة الطماطم الطازجة.",
+        "image": "/images/yellow_tomato_base.jpg",
+        "prepTime": 5,
+        "cookTime": 0,
+        "servings": 3,
+        "difficulty": "easy",
+        "category": "pizza",
+        "cuisine": "italian",
+        "ingredients": [
+          { "name": "طماطم صفراء مُعلبة", "amount": 400, "unit": "جرام" },
+          { "name": "زيت زيتون بكر ممتاز", "amount": 20, "unit": "جرام" },
+          { "name": "ملح بحري", "amount": 3, "unit": "جرام" },
+          { "name": "أوراق ريحان طازج", "amount": 5, "unit": "وحدة" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اخلط الطماطم الصفراء، زيت الزيتون، الملح، والريحان يدوياً أو قليلاً باستخدام هاند بلندر.", "time": 3 },
+          { "step": 2, "description": "اترك قطع الطماطم سليمة جزئياً للحصول على قوام خشن. لا تقم بالطبخ المسبق.", "time": 1 },
+          { "step": 3, "description": "يُستخدم بارداً كقاعدة.", "time": 1 }
+        ],
+        "tags": ["طماطم", "أصفر", "قاعدة حمراء", "خفيف"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "حلو، فاكهي، خفيف الحموضة",
+        "usage": "قاعدة بيتزا أساسية (Base Rossa)",
+        "suggestedToppings": ["بوراتا", "كابري (Capers)", "موزاريلا"],
+        "notes": [
+          {
+            "id": "note-2",
+            "title": "نصيحة مهمة",
+            "content": "هذا الصوص يجب أن يكون أقل كثافة من صوص الطماطم الأحمر التقليدي.",
+            "template": {
+              "id": "tip",
+              "name": "نصيحة",
+              "type": "tip",
+              "icon": null,
+              "bgColor": "bg-blue-50 dark:bg-blue-900/30",
+              "borderColor": "border-blue-200 dark:border-blue-700",
+              "textColor": "text-blue-700 dark:text-blue-300",
+              "iconColor": "text-blue-500 dark:text-blue-400"
+            },
+            "createdAt": "2024-01-15T10:30:00Z"
+          }
+        ],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 5,
+        "title": "كريمة الفلفل الحلو المشوي (Roasted Pepper Cream)",
+        "description": "قاعدة بيضاء غير تقليدية بنكهة الفلفل الأحمر المشوي المدخنة والمتبلة.",
+        "content": "يضفي هذا الصوص اللون والنكهة المدخنة. يمكن تعديل حرارته بإضافة القليل من الفلفل الحار أثناء التحضير.",
+        "image": "/images/roasted_pepper_cream.jpg",
+        "prepTime": 20,
+        "cookTime": 0,
+        "servings": 3,
+        "difficulty": "medium",
+        "category": "pizza",
+        "cuisine": "italian",
+        "ingredients": [
+          { "name": "فلفل حلو أحمر (مشوي ومقشر)", "amount": 300, "unit": "جرام" },
+          { "name": "جبنة ريكوتا", "amount": 100, "unit": "جرام" },
+          { "name": "زيت زيتون بكر ممتاز", "amount": 20, "unit": "جرام" },
+          { "name": "ملح وفلفل", "amount": 0, "unit": "حسب الرغبة" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اشوِ الفلفل حتى يتفحم القشر، ثم قشره وأزل البذور.", "time": 15 },
+          { "step": 2, "description": "اخلط الفلفل المشوي مع الريكوتا وزيت الزيتون في محضرة الطعام حتى يصبح كريمة ناعمة.", "time": 3 },
+          { "step": 3, "description": "تبّل بالملح والفلفل. يُستخدم كقاعدة بيضاء.", "time": 2 }
+        ],
+        "tags": ["فلفل مشوي", "مدخن", "قاعدة بيضاء", "خضروات"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "حلو، مدخن، متبل",
+        "usage": "قاعدة بيضاء للبيتزا (Base Bianca)",
+        "suggestedToppings": ["سجق حار (Nduja)", "زيتون كالاماتا", "جبن الماعز"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 6,
+        "title": "كريمة البطاطا والروزماري (Potato & Rosemary Cream)",
+        "description": "قاعدة بيضاء كثيفة تعتمد على البطاطا المهروسة والمتبلة بالروزماري القوي.",
+        "content": "يمنح هذا الصوص قاعدة نشوية وغنية للبيتزا، وهو بديل ممتاز لقاعدة الطحين. نكهة الروزماري ضرورية لتكسر كثافة البطاطا.",
+        "image": "/images/potato_rosemary_cream.jpg",
+        "prepTime": 20,
+        "cookTime": 0,
+        "servings": 3,
+        "difficulty": "medium",
+        "category": "pizza",
+        "cuisine": "italian",
+        "ingredients": [
+          { "name": "بطاطا مسلوقة ومهروسة", "amount": 200, "unit": "جرام" },
+          { "name": "حليب أو كريمة خفيفة", "amount": 50, "unit": "جرام" },
+          { "name": "زيت زيتون", "amount": 10, "unit": "جرام" },
+          { "name": "روزماري طازج مفروم", "amount": 5, "unit": "جرام" },
+          { "name": "ملح وفلفل أبيض", "amount": 0, "unit": "حسب الرغبة" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اهرِس البطاطا جيداً وأضف الحليب والزيت لتنعيمها.", "time": 5 },
+          { "step": 2, "description": "أضف الروزماري الطازج المفروم والملح. اخلط يدوياً أو بالخلاط اليدوي.", "time": 5 },
+          { "step": 3, "description": "يُفرد كطبقة خفيفة على العجين قبل إضافة باقي المكونات.", "time": 1 }
+        ],
+        "tags": ["بطاطا", "روزماري", "قاعدة نشوية", "متبلة"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "ترابي، مالح، كثيف، متبل",
+        "usage": "قاعدة بيضاء للبيتزا (Base Bianca)",
+        "suggestedToppings": ["السجق الإيطالي (Salsiccia)", "بروفولوني مدخن", "ملح بحر خشن"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 7,
+        "title": "صوص البيستو بالكزبرة والأفوكادو",
+        "description": "بيستو عصري غير إيطالي، منعش وقوامه كريمي من الأفوكادو، مثالي مع الدجاج المشوي.",
+        "content": "يستخدم هذا الصوص كقاعدة للبيتزا ذات الطابع اللاتيني أو المكسيكي، ويجب إضافته بعد خبز البيتزا للحفاظ على لونه ونكهة الأفوكادو.",
+        "image": "/images/avocado_cilantro_pesto.jpg",
+        "prepTime": 10,
+        "cookTime": 0,
+        "servings": 3,
+        "difficulty": "easy",
+        "category": "pizza",
+        "cuisine": "fusion",
+        "ingredients": [
+          { "name": "كزبرة خضراء طازجة", "amount": 100, "unit": "جرام" },
+          { "name": "أفوكادو ناضج", "amount": 100, "unit": "جرام" },
+          { "name": "زيت زيتون", "amount": 30, "unit": "جرام" },
+          { "name": "ليمون حامض", "amount": 10, "unit": "جرام" },
+          { "name": "ملح وفلفل", "amount": 0, "unit": "حسب الرغبة" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اخلط الكزبرة، الأفوكادو، زيت الزيتون، وعصير الليمون في محضرة الطعام.", "time": 5 },
+          { "step": 2, "description": "اخفق حتى يصبح الصوص كريمة ناعمة. أضف المزيد من الزيت إذا لزم الأمر.", "time": 3 },
+          { "step": 3, "description": "يُتبل ويُستخدم كإضافة بعد خبز البيتزا.", "time": 2 }
+        ],
+        "tags": ["أفوكادو", "كزبرة", "بيستو", "منعش"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "منعش، عشبي، كريمي، حامضي",
+        "usage": "إضافة بعد الخبز أو قاعدة بيضاء خفيفة جداً",
+        "suggestedToppings": ["دجاج مُتبل", "فلفل هالابينو", "جبنة كوتيجا (Cotija)"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 8,
+        "title": "صوص الأنشوجة والزيتون (Anchovy and Olive Sauce)",
+        "description": "قاعدة مالحة جداً وقوية النكهة (Umami)، تُستخدم بكميات قليلة، مثالية لعشاق النكهات الحادة.",
+        "content": "هذا الصوص هو نسخة مكثفة من النكهات البحرية والمالحة. يُطبخ قليلاً لمزج نكهة الأنشوجة الذائبة مع الزيتون والثوم.",
+        "image": "/images/anchovy_olive_sauce.jpg",
+        "prepTime": 5,
+        "cookTime": 5,
+        "servings": 3,
+        "difficulty": "easy",
+        "category": "pizza",
+        "cuisine": "italian",
+        "ingredients": [
+          { "name": "أنشوجة مُملحة (زيتية)", "amount": 50, "unit": "جرام" },
+          { "name": "زيتون أسود مفروم", "amount": 50, "unit": "جرام" },
+          { "name": "زيت زيتون", "amount": 30, "unit": "جرام" },
+          { "name": "ثوم مفروم ناعم", "amount": 10, "unit": "جرام" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "سخن الزيت وأضف الثوم والأنشوجة.", "time": 2 },
+          { "step": 2, "description": "اهرَس الأنشوجة حتى تذوب تماماً في الزيت.", "time": 2 },
+          { "step": 3, "description": "أضف الزيتون المفروم. يُطبخ قليلاً ويُستخدم كطبقة خفيفة جداً.", "time": 1 }
+        ],
+        "tags": ["أنشوجة", "زيتون", "مالح", "قاعدة غير تقليدية"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "مالح جداً، حاد، أومامي (Umami)",
+        "usage": "قاعدة بديلة ذات نكهة قوية جداً",
+        "suggestedToppings": ["طماطم شيري", "موزاريلا طازجة", "أوريجانو"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 9,
+        "title": "كريمة الخرشوف/الأرضي شوكي (Artichoke Cream)",
+        "description": "قاعدة بيضاء طرية بنكهة الخرشوف الأرضية، تُستخدم كقاعدة للمأكولات البحرية واللحم المدخن.",
+        "content": "يتميز هذا الصوص بقوامه الكريمي ونكهته الخفيفة التي لا تطغى على باقي المكونات، وليمسة الحامض تكسر حدة الطعم.",
+        "image": "/images/artichoke_cream_base.jpg",
+        "prepTime": 10,
+        "cookTime": 0,
+        "servings": 3,
+        "difficulty": "easy",
+        "category": "pizza",
+        "cuisine": "italian",
+        "ingredients": [
+          { "name": "قلوب خرشوف مُعلبة (مصفاة)", "amount": 200, "unit": "جرام" },
+          { "name": "جبنة بارميزان", "amount": 50, "unit": "جرام" },
+          { "name": "زيت زيتون بكر ممتاز", "amount": 30, "unit": "جرام" },
+          { "name": "عصير ليمون", "amount": 10, "unit": "جرام" },
+          { "name": "ملح وفلفل", "amount": 0, "unit": "حسب الرغبة" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اخلط الخرشوف، البارميزان، زيت الزيتون، وعصير الليمون في محضرة الطعام.", "time": 5 },
+          { "step": 2, "description": "اخفق حتى يصبح الخليط كريمة ناعمة ومتجانسة.", "time": 3 },
+          { "step": 3, "description": "يُتبل ويُستخدم كقاعدة بيضاء.", "time": 2 }
+        ],
+        "tags": ["خرشوف", "أرضي شوكي", "قاعدة بيضاء", "خضروات"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "ترابي خفيف، مالح قليلاً، كريمي",
+        "usage": "قاعدة بيضاء للبيتزا",
+        "suggestedToppings": ["لحم مقدد (Pancetta) أو سلمون مدخن", "بصل مكرمل", "موزاريلا"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 10,
+        "title": "كريمة جبن الماعز والأعشاب (Goat Cheese & Herb Base)",
+        "description": "قاعدة بيضاء منعشة وحامضة قليلاً، مثالية مع التين والعسل.",
+        "content": "الصوص يعتمد على جبن الماعز الطري الذي يذوب في الفرن ليمنح طعمًا حادًا ولذيذًا. القليل من الزبادي يمنحه قواماً أسهل للفرد.",
+        "image": "/images/goat_cheese_herb_base.jpg",
+        "prepTime": 5,
+        "cookTime": 0,
+        "servings": 3,
+        "difficulty": "easy",
+        "category": "pizza",
+        "cuisine": "fusion",
+        "ingredients": [
+          { "name": "جبنة ماعز طرية (Chevre)", "amount": 150, "unit": "جرام" },
+          { "name": "زبادي يوناني أو قشدة حامضة", "amount": 50, "unit": "جرام" },
+          { "name": "أعشاب طازجة مفرومة (زعتر/شبت)", "amount": 5, "unit": "جرام" },
+          { "name": "ملح وفلفل", "amount": 0, "unit": "حسب الرغبة" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اخلط جبنة الماعز مع الزبادي/القشدة والأعشاب المفرومة يدوياً أو بمضرب يدوي.", "time": 3 },
+          { "step": 2, "description": "يُتبل ويُدهن على العجين كقاعدة بيضاء.", "time": 2 }
+        ],
+        "tags": ["جبن ماعز", "أعشاب", "حامض", "قاعدة بيضاء"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "حامض، منعش، مالح، عشبي",
+        "usage": "قاعدة بيضاء للبيتزا (Base Bianca)",
+        "suggestedToppings": ["شرائح تين (Fig) طازجة", "عسل", "بصل مكرمل"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 11,
+        "title": "صوص البيستو بالسبانخ واللوز (Spinach & Almond Pesto)",
+        "description": "نسخة بيستو أخف من التقليدي، تعتمد على السبانخ واللوز بدلاً من الريحان والصنوبر.",
+        "content": "هذا البيستو خيار صحي وأخف، ويمنح البيتزا نكهة عشبية ترابية مع قوام اللوز المقرمش.",
+        "image": "/images/spinach_almond_pesto.jpg",
+        "prepTime": 10,
+        "cookTime": 0,
+        "servings": 3,
+        "difficulty": "easy",
+        "category": "pizza",
+        "cuisine": "italian",
+        "ingredients": [
+          { "name": "أوراق سبانخ طازجة", "amount": 100, "unit": "جرام" },
+          { "name": "لوز محمص", "amount": 50, "unit": "جرام" },
+          { "name": "زيت زيتون", "amount": 40, "unit": "جرام" },
+          { "name": "جبن بارميزان", "amount": 20, "unit": "جرام" },
+          { "name": "ثوم", "amount": 5, "unit": "جرام" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اخلط السبانخ، اللوز، الثوم، والجبن في محضرة الطعام.", "time": 5 },
+          { "step": 2, "description": "أضف زيت الزيتون تدريجياً أثناء الخفق حتى يصل القوام المطلوب.", "time": 3 },
+          { "step": 3, "description": "يُتبل ويُستخدم كقاعدة بيضاء/خضراء.", "time": 2 }
+        ],
+        "tags": ["سبانخ", "بيستو", "لوز", "قاعدة خضراء"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "ترابي، عشبي، مالح",
+        "usage": "قاعدة بيضاء للبيتزا (Base Bianca)",
+        "suggestedToppings": ["دجاج مُفتت", "فلفل أحمر مشوي", "موزاريلا"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 12,
+        "title": "كريمة الفاصولياء البيضاء والسيج (White Bean & Sage Cream)",
+        "description": "قاعدة بيضاء كثيفة بنكهة المريمية (Sage)، مثالية مع السجق الإيطالي.",
+        "content": "هذا الصوص هو خيار جيد لمن يبحثون عن قوام ثقيل ولذيذ. المريمية (السيج) تمنحه نكهة عطرية دافئة ومميزة.",
+        "image": "/images/white_bean_sage_cream.jpg",
+        "prepTime": 15,
+        "cookTime": 5,
+        "servings": 3,
+        "difficulty": "medium",
+        "category": "pizza",
+        "cuisine": "italian",
+        "ingredients": [
+          { "name": "فاصولياء بيضاء مُعلبة (مُصفاة ومغسولة)", "amount": 200, "unit": "جرام" },
+          { "name": "زيت زيتون", "amount": 30, "unit": "جرام" },
+          { "name": "أوراق مريمية طازجة (Sage)", "amount": 5, "unit": "جرام" },
+          { "name": "ماء سلق الفاصولياء (أو ماء)", "amount": 50, "unit": "جرام" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اقلِ المريمية قليلاً في الزيت ثم أزلها. احتفظ بالزيت المتبل.", "time": 3 },
+          { "step": 2, "description": "اخلط الفاصولياء مع الزيت المتبل والماء في محضرة الطعام حتى تصبح كريمة ناعمة.", "time": 5 },
+          { "step": 3, "description": "يُتبل ويُفرد كقاعدة بيضاء.", "time": 2 }
+        ],
+        "tags": ["فاصولياء بيضاء", "مريمية", "قاعدة بيضاء", "ترابي"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "ترابي، كثيف، مالح، متبل",
+        "usage": "قاعدة بيضاء للبيتزا (Base Bianca)",
+        "suggestedToppings": ["سجق إيطالي (Salsiccia)", "بروكلي مشوي", "موزاريلا مدخنة"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 13,
+        "title": "كريمة البصل المكرمل الحلوة (Sweet Caramelized Onion Cream)",
+        "description": "قاعدة بيضاء ذهبية تعتمد على حلاوة ونكهة البصل المكرملة، غنية بنكهة أومامي.",
+        "content": "يتطلب هذا الصوص صبراً في التحضير للحصول على كرملة عميقة للبصل، مما يمنحه حلاوة طبيعية وكثافة. يتماشى بشكل ممتاز مع الأجبان القوية.",
+        "image": "/images/caramelized_onion_cream.jpg",
+        "prepTime": 5,
+        "cookTime": 45,
+        "servings": 3,
+        "difficulty": "medium",
+        "category": "pizza",
+        "cuisine": "fusion",
+        "ingredients": [
+          { "name": "بصل أبيض أو أصفر (مقطع شرائح رفيعة)", "amount": 200, "unit": "جرام" },
+          { "name": "زبدة غير مملحة", "amount": 20, "unit": "جرام" },
+          { "name": "سكر بني (اختياري)", "amount": 10, "unit": "جرام" },
+          { "name": "مرق خضار أو ماء (للهرس)", "amount": 50, "unit": "جرام" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "ذوّب الزبدة وكرمل البصل على نار هادئة جداً لمدة 30-45 دقيقة مع التحريك المتقطع.", "time": 45 },
+          { "step": 2, "description": "أضف مرق الخضار والسكر (إذا استخدم) واطهو قليلاً.", "time": 5 },
+          { "step": 3, "description": "اهرَس المزيج حتى يصبح كريمة ناعمة. يُستخدم دافئاً أو بارداً.", "time": 5 }
+        ],
+        "tags": ["بصل مكرمل", "حلو", "أومامي", "قاعدة بيضاء"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "حلو، غني، أومامي (Umami)",
+        "usage": "قاعدة بيضاء للبيتزا (Base Bianca)",
+        "suggestedToppings": ["جبنة Taleggio", "جبنة الماعز", "لحم مقدد (Pancetta)"],
+        "notes": [
+          {
+            "id": "note-3",
+            "title": "تحذير مهم",
+            "content": "يجب عدم رفع الحرارة عند كرملة البصل لتجنب حرقه.",
+            "template": {
+              "id": "warning",
+              "name": "تحذير",
+              "type": "warning",
+              "icon": null,
+              "bgColor": "bg-orange-50 dark:bg-orange-900/30",
+              "borderColor": "border-orange-200 dark:border-orange-700",
+              "textColor": "text-orange-700 dark:text-orange-300",
+              "iconColor": "text-orange-500 dark:text-orange-400"
+            },
+            "createdAt": "2024-01-15T10:30:00Z"
+          }
+        ],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 14,
+        "title": "صوص الخردل والعسل (Honey Mustard Base)",
+        "description": "قاعدة بيضاء حديثة بطعم حلو ولاذع، خيار ممتاز مع الدجاج المشوي.",
+        "content": "يمنح هذا الصوص نكهة معقدة تجمع بين حدة الخردل وحلاوة العسل. يُستخدم كطبقة رقيقة جداً.",
+        "image": "/images/honey_mustard_base.jpg",
+        "prepTime": 5,
+        "cookTime": 0,
+        "servings": 3,
+        "difficulty": "easy",
+        "category": "pizza",
+        "cuisine": "fusion",
+        "ingredients": [
+          { "name": "خردل ديجون (Dijon Mustard)", "amount": 100, "unit": "جرام" },
+          { "name": "عسل طبيعي", "amount": 50, "unit": "جرام" },
+          { "name": "زيت زيتون", "amount": 10, "unit": "جرام" },
+          { "name": "عصير ليمون", "amount": 5, "unit": "جرام" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اخلط الخردل والعسل وزيت الزيتون وعصير الليمون يدوياً حتى يتجانس تماماً.", "time": 3 },
+          { "step": 2, "description": "تبّل بالملح والفلفل حسب الرغبة. يُستخدم نيئاً كقاعدة خفيفة.", "time": 2 }
+        ],
+        "tags": ["خردل", "عسل", "لاذع", "قاعدة بيضاء"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "حلو، لاذع، حامض، معقد",
+        "usage": "قاعدة بيضاء للبيتزا (Base Bianca)",
+        "suggestedToppings": ["قطع دجاج مشوية", "بصل أحمر نيئ", "جبنة شيدر بيضاء"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 15,
+        "title": "كريمة البروكلي رابي (Broccoli Rabe/Rapini Cream)",
+        "description": "قاعدة خضراء تقليدية نابولية، تتميز بنكهة مُرة قليلاً، مثالية مع السجق الحار.",
+        "content": "يُعد هذا الصوص أساس بيتزا السجق والبروكلي رابي الكلاسيكية. نكهته المرة تتطلب جبناً حاداً مثل البيكورينو لكسرها.",
+        "image": "/images/rapini_cream_base.jpg",
+        "prepTime": 15,
+        "cookTime": 5,
+        "servings": 3,
+        "difficulty": "medium",
+        "category": "pizza",
+        "cuisine": "italian",
+        "ingredients": [
+          { "name": "بروكلي رابي مسلوق ومصفى (Rapini)", "amount": 200, "unit": "جرام" },
+          { "name": "زيت زيتون", "amount": 30, "unit": "جرام" },
+          { "name": "ثوم مقلي خفيف", "amount": 5, "unit": "جرام" },
+          { "name": "جبن بيكورينو", "amount": 20, "unit": "جرام" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اسلق البروكلي رابي وصفّه جيداً. اقلي الثوم في الزيت قليلاً ثم أزله.", "time": 10 },
+          { "step": 2, "description": "اخلط البروكلي رابي مع زيت الزيتون المتبل والبيكورينو في محضرة الطعام.", "time": 3 },
+          { "step": 3, "description": "اهرَس حتى يصبح كريمة ناعمة أو خشنة حسب الرغبة. يُستخدم كقاعدة بيضاء/خضراء.", "time": 2 }
+        ],
+        "tags": ["بروكلي رابي", "رابيني", "مر", "قاعدة خضراء"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "مر قليلاً، عشبي، مالح",
+        "usage": "قاعدة بيضاء للبيتزا (Base Bianca)",
+        "suggestedToppings": ["سجق إيطالي حار", "موزاريلا مدخنة", "جبنة بروفولوني"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 16,
+        "title": "صوص جبنة الكمامبير/البري (Camembert/Brie Base)",
+        "description": "قاعدة بيضاء فاخرة وغنية جداً، طعمها زبدي وقوي، تتماشى مع الفواكه والمربى.",
+        "content": "يتم إذابة الجبن الطري مثل الكمامبير أو البري في الكريمة لإنشاء صوص كثيف يذوب فوق العجين.",
+        "image": "/images/camembert_brie_base.jpg",
+        "prepTime": 5,
+        "cookTime": 5,
+        "servings": 3,
+        "difficulty": "easy",
+        "category": "pizza",
+        "cuisine": "french",
+        "ingredients": [
+          { "name": "جبنة كامامبير أو بري (منزوعة القشرة جزئياً)", "amount": 150, "unit": "جرام" },
+          { "name": "كريمة طبخ ثقيلة", "amount": 50, "unit": "جرام" },
+          { "name": "فلفل أبيض", "amount": 0, "unit": "رشة" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "سخن الكريمة قليلاً على نار هادئة.", "time": 2 },
+          { "step": 2, "description": "أضف قطع الجبنة وحرك باستمرار حتى تذوب بالكامل وتصبح صوصاً كثيفاً.", "time": 3 },
+          { "step": 3, "description": "يُستخدم دافئاً كطبقة خفيفة.", "time": 1 }
+        ],
+        "tags": ["كمامبير", "بري", "غني", "قاعدة بيضاء"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "غني، زبدي، دافئ",
+        "usage": "قاعدة بيضاء فاخرة",
+        "suggestedToppings": ["لحم بروشوتو (Prosciutto Crudo) يُضاف بعد الخبز", "شرائح تين أو مربى التين"],
+        "notes": [
+          {
+            "id": "note-4",
+            "title": "نصيحة مهمة",
+            "content": "يجب إزالة القشرة البيضاء السميكة من الجبن قدر الإمكان للحصول على صوص أكثر نعومة.",
+            "template": {
+              "id": "tip",
+              "name": "نصيحة",
+              "type": "tip",
+              "icon": null,
+              "bgColor": "bg-blue-50 dark:bg-blue-900/30",
+              "borderColor": "border-blue-200 dark:border-blue-700",
+              "textColor": "text-blue-700 dark:text-blue-300",
+              "iconColor": "text-blue-500 dark:text-blue-400"
+            },
+            "createdAt": "2024-01-15T10:30:00Z"
+          }
+        ],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 17,
+        "title": "صوص الفلفل الأحمر المحمّر الحار (Spicy Roasted Red Pepper)",
+        "description": "قاعدة حارة ومدخنة بنكهة الفلفل الأحمر المشوي، مثالية لبيتزا السجق الحار.",
+        "content": "يتميز هذا الصوص بالحرارة والنكهة المدخنة، وهو بديل ممتاز لصوص الطماطم التقليدي في البيتزا الحارة.",
+        "image": "/images/spicy_red_pepper_base.jpg",
+        "prepTime": 15,
+        "cookTime": 0,
+        "servings": 3,
+        "difficulty": "medium",
+        "category": "pizza",
+        "cuisine": "fusion",
+        "ingredients": [
+          { "name": "فلفل أحمر حار (مُحمّر ومقشر)", "amount": 200, "unit": "جرام" },
+          { "name": "زيت زيتون", "amount": 50, "unit": "جرام" },
+          { "name": "عصير ليمون", "amount": 10, "unit": "جرام" },
+          { "name": "بابريكا مدخنة", "amount": 5, "unit": "جرام" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اشوِ الفلفل ثم قشره وأزل البذور.", "time": 10 },
+          { "step": 2, "description": "اخلط الفلفل مع زيت الزيتون، عصير الليمون، والبابريكا المدخنة في محضرة الطعام حتى يصبح ناعماً.", "time": 3 },
+          { "step": 3, "description": "يُتبل ويُستخدم كقاعدة حمراء/بيضاء.", "time": 2 }
+        ],
+        "tags": ["فلفل حار", "مدخن", "حار", "قاعدة حمراء"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "حار، مدخن، حامض",
+        "usage": "قاعدة بيضاء للبيتزا (Base Bianca) أو قاعدة حمراء حارة",
+        "suggestedToppings": ["سجق (Pepperoni)", "بصل أحمر", "جبنة فيتا"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 18,
+        "title": "صوص اليقطين (القرع) والزنجبيل (Pumpkin and Ginger Base)",
+        "description": "قاعدة بيضاء/برتقالية دافئة وموسمية، تجمع بين حلاوة القرع ودفء التوابل.",
+        "content": "يمنح هذا الصوص البيتزا نكهة فريدة وخريفية. الزنجبيل والقرفة وجوزة الطيب أساسية لتوازن حلاوة اليقطين.",
+        "image": "/images/pumpkin_ginger_base.jpg",
+        "prepTime": 10,
+        "cookTime": 15,
+        "servings": 3,
+        "difficulty": "medium",
+        "category": "pizza",
+        "cuisine": "fusion",
+        "ingredients": [
+          { "name": "يقطين (قرع) مهروس ومطبوخ", "amount": 200, "unit": "جرام" },
+          { "name": "كريمة طبخ", "amount": 50, "unit": "جرام" },
+          { "name": "زنجبيل مبشور", "amount": 5, "unit": "جرام" },
+          { "name": "قرفة وجوزة الطيب", "amount": 2, "unit": "جرام" },
+          { "name": "ملح وفلفل", "amount": 0, "unit": "حسب الرغبة" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اخلط اليقطين المهروس وكريمة الطبخ والتوابل والزنجبيل في قدر.", "time": 5 },
+          { "step": 2, "description": "سخن المزيج على نار هادئة حتى يتجانس ويصبح كثيفاً.", "time": 10 },
+          { "step": 3, "description": "يُستخدم دافئاً كقاعدة بيضاء/برتقالية.", "time": 1 }
+        ],
+        "tags": ["يقطين", "قرع", "زنجبيل", "موسمي"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "حلو، دافئ، كريمي، متبل",
+        "usage": "قاعدة بيضاء للبيتزا (Base Bianca)",
+        "suggestedToppings": ["بانشيتا (Pancetta) مقرمشة", "روزماري", "جبنة غورغونزولا"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 19,
+        "title": "صوص كريمة الكوسة والنعناع (Zucchini and Mint Cream)",
+        "description": "قاعدة بيضاء منعشة وعشبية، تستخدم الكوسة المهروسة مع لمسة من النعناع.",
+        "content": "هذا الصوص صيفي ومنعش، النعناع يمنح الكوسة نكهة مفاجئة وجديدة، والبارميزان يضيف العمق.",
+        "image": "/images/zucchini_mint_cream.jpg",
+        "prepTime": 10,
+        "cookTime": 10,
+        "servings": 3,
+        "difficulty": "medium",
+        "category": "pizza",
+        "cuisine": "italian",
+        "ingredients": [
+          { "name": "كوسة (كوسا) مهروسة ومطبوخة", "amount": 200, "unit": "جرام" },
+          { "name": "جبن بارميزان", "amount": 30, "unit": "جرام" },
+          { "name": "أوراق نعناع طازج مفروم", "amount": 5, "unit": "جرام" },
+          { "name": "زيت زيتون", "amount": 20, "unit": "جرام" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اطه الكوسة حتى تلين ثم اهرسها مع الزيت.", "time": 10 },
+          { "step": 2, "description": "اخلط الكوسة المهروسة مع البارميزان والنعناع المفروم.", "time": 5 },
+          { "step": 3, "description": "يُتبل ويُستخدم كقاعدة بيضاء/خضراء.", "time": 2 }
+        ],
+        "tags": ["كوسة", "نعناع", "منعش", "قاعدة خضراء"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "منعش، عشبي، مالح، خفيف",
+        "usage": "قاعدة بيضاء للبيتزا (Base Bianca)",
+        "suggestedToppings": ["روبيان (Shrimp) مُتبل", "طماطم شيري", "بوراتا"],
+        "notes": [
+          {
+            "id": "note-5",
+            "title": "نصيحة مهمة",
+            "content": "يجب تصفية الكوسة جيداً بعد الطبخ لتجنب زيادة الرطوبة في الصوص.",
+            "template": {
+              "id": "tip",
+              "name": "نصيحة",
+              "type": "tip",
+              "icon": null,
+              "bgColor": "bg-blue-50 dark:bg-blue-900/30",
+              "borderColor": "border-blue-200 dark:border-blue-700",
+              "textColor": "text-blue-700 dark:text-blue-300",
+              "iconColor": "text-blue-500 dark:text-blue-400"
+            },
+            "createdAt": "2024-01-15T10:30:00Z"
+          }
+        ],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      },
+      {
+        "id": 20,
+        "title": "صوص الطماطم المجففة بالشمس (Sun-Dried Tomato Pesto)",
+        "description": "قاعدة حمراء مركزة ذات نكهة قوية وحلوة، مثالية مع الأجبان المالحة.",
+        "content": "يعطي هذا الصوص نكهة طماطم مركزة وحلوة وحامضة قليلاً، وهو أكثر كثافة من صوص الطماطم العادي.",
+        "image": "/images/sun_dried_tomato_pesto.jpg",
+        "prepTime": 10,
+        "cookTime": 0,
+        "servings": 3,
+        "difficulty": "easy",
+        "category": "pizza",
+        "cuisine": "italian",
+        "ingredients": [
+          { "name": "طماطم مجففة بالشمس (في الزيت)", "amount": 150, "unit": "جرام" },
+          { "name": "صنوبر", "amount": 50, "unit": "جرام" },
+          { "name": "ريحان", "amount": 20, "unit": "جرام" },
+          { "name": "جبن بارميزان", "amount": 20, "unit": "جرام" },
+          { "name": "ملح وفلفل", "amount": 0, "unit": "حسب الرغبة" }
+        ],
+        "instructions": [
+          { "step": 1, "description": "اخلط جميع المكونات في محضرة الطعام، مع استخدام القليل من الزيت الموجود في مرطبان الطماطم.", "time": 5 },
+          { "step": 2, "description": "اخفق حتى يصبح الخليط ناعماً كالمعجون.", "time": 3 },
+          { "step": 3, "description": "يُستخدم كطبقة رقيقة كقاعدة حمراء مركزة.", "time": 2 }
+        ],
+        "tags": ["طماطم مجففة", "بيستو", "مركز", "قاعدة حمراء"],
+        "nutrition": {
+          "calories": 320,
+          "protein": 12,
+          "carbs": 8,
+          "fat": 28,
+          "fiber": 3
+        },
+        "flavor": "حلو، حامض قليلاً، مالح، مركز",
+        "usage": "قاعدة حمراء بديلة (Base Rossa)",
+        "suggestedToppings": ["دجاج مُفتت", "بصل مكرمل", "جبنة فيتا"],
+        "notes": [],
+        "createdAt": "2025-10-27T23:25:00Z",
+        "updatedAt": "2025-10-27T23:25:00Z"
+      }
+    ]
+  }
