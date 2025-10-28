@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -30,24 +30,17 @@ interface Nutrition {
   fiber: number
 }
 
-interface Recipe {
-  id: number
+interface RecipeData {
   title: string
-  name?: string
   description?: string
   content: string
-  notes: any[]
-  createdAt: string
-  updatedAt: string
-  category?: 'Pizza' | 'Dough' | 'Sauce' | 'Toppings' | 'Other'
+  category: string
   cuisine?: string
   difficulty?: 'easy' | 'medium' | 'hard'
   prepTime?: number
   cookTime?: number
   servings?: number
-  isFavorite?: boolean
   image?: string
-  imageUrl?: string
   ingredients?: Ingredient[]
   instructions?: Instruction[]
   tags?: string[]
@@ -57,32 +50,24 @@ interface Recipe {
   suggestedToppings?: string[]
 }
 
-interface EditRecipeModalProps {
+interface AddRecipeModalProps {
   isOpen: boolean
   onClose: () => void
-  onUpdate: (recipe: Recipe) => void
-  recipe: Recipe | null
+  onAdd: (recipeData: RecipeData) => void
 }
 
-export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: EditRecipeModalProps) {
-  const [recipeData, setRecipeData] = useState<Recipe>({
-    id: 0,
+export default function AddRecipeModal({ isOpen, onClose, onAdd }: AddRecipeModalProps) {
+  const [recipeData, setRecipeData] = useState<RecipeData>({
     title: "",
-    name: "",
     description: "",
     content: "",
-    notes: [],
-    createdAt: "",
-    updatedAt: "",
     category: "Other",
     cuisine: "",
     difficulty: "easy",
     prepTime: 0,
     cookTime: 0,
     servings: 1,
-    isFavorite: false,
     image: "",
-    imageUrl: "",
     ingredients: [],
     instructions: [],
     tags: [],
@@ -99,33 +84,33 @@ export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: E
   })
   const [activeTab, setActiveTab] = useState<'basic' | 'ingredients' | 'instructions' | 'nutrition' | 'details'>('basic')
 
-  useEffect(() => {
-    if (recipe) {
+  const handleSubmit = () => {
+    if (recipeData.title.trim() && recipeData.content.trim()) {
+      onAdd(recipeData)
       setRecipeData({
-        ...recipe,
-        title: recipe.title || recipe.name || "",
-        name: recipe.name || recipe.title || "",
-        imageUrl: recipe.imageUrl || recipe.image || "",
-        ingredients: recipe.ingredients || [],
-        instructions: recipe.instructions || [],
-        tags: recipe.tags || [],
-        suggestedToppings: recipe.suggestedToppings || [],
-        nutrition: recipe.nutrition || {
+        title: "",
+        description: "",
+        content: "",
+        category: "Other",
+        cuisine: "",
+        difficulty: "easy",
+        prepTime: 0,
+        cookTime: 0,
+        servings: 1,
+        image: "",
+        ingredients: [],
+        instructions: [],
+        tags: [],
+        nutrition: {
           calories: 0,
           protein: 0,
           carbs: 0,
           fat: 0,
           fiber: 0
-        }
-      })
-    }
-  }, [recipe])
-
-  const handleSubmit = () => {
-    if (recipeData.title.trim() && recipeData.content.trim()) {
-      onUpdate({
-        ...recipeData,
-        updatedAt: new Date().toISOString()
+        },
+        flavor: "",
+        usage: "",
+        suggestedToppings: []
       })
       onClose()
     }
@@ -210,13 +195,13 @@ export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: E
     }))
   }
 
-  if (!isOpen || !recipe) return null
+  if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-background rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-xl font-semibold">تعديل الوصفة</h2>
+          <h2 className="text-xl font-semibold">إضافة وصفة جديدة</h2>
           <Button variant="ghost" size="sm" onClick={onClose}>
             <X size={20} />
           </Button>
@@ -241,7 +226,7 @@ export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: E
             >
               <Icon size={16} />
               {label}
-          </button>
+            </button>
           ))}
         </div>
 
@@ -254,12 +239,12 @@ export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: E
                 <Input
                   id="title"
                   value={recipeData.title}
-                  onChange={(e) => setRecipeData(prev => ({ ...prev, title: e.target.value, name: e.target.value }))}
+                  onChange={(e) => setRecipeData(prev => ({ ...prev, title: e.target.value }))}
                   placeholder="أدخل اسم الوصفة"
                 />
               </div>
 
-          <div>
+              <div>
                 <Label htmlFor="description">الوصف</Label>
                 <Textarea
                   id="description"
@@ -267,13 +252,13 @@ export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: E
                   onChange={(e) => setRecipeData(prev => ({ ...prev, description: e.target.value }))}
                   placeholder="وصف مختصر للوصفة"
                   rows={3}
-            />
-          </div>
+                />
+              </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
                   <Label htmlFor="category">الفئة</Label>
-                  <Select value={recipeData.category} onValueChange={(value) => setRecipeData(prev => ({ ...prev, category: value as any }))}>
+                  <Select value={recipeData.category} onValueChange={(value) => setRecipeData(prev => ({ ...prev, category: value }))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -285,9 +270,9 @@ export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: E
                       <SelectItem value="Other">أخرى</SelectItem>
                     </SelectContent>
                   </Select>
-            </div>
+                </div>
 
-            <div>
+                <div>
                   <Label htmlFor="cuisine">المطبخ</Label>
                   <Input
                     id="cuisine"
@@ -295,8 +280,8 @@ export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: E
                     onChange={(e) => setRecipeData(prev => ({ ...prev, cuisine: e.target.value }))}
                     placeholder="مثل: إيطالي، عربي"
                   />
-            </div>
-          </div>
+                </div>
+              </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
@@ -309,28 +294,28 @@ export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: E
                   />
                 </div>
 
-            <div>
+                <div>
                   <Label htmlFor="cookTime">وقت الطبخ (دقيقة)</Label>
                   <Input
                     id="cookTime"
                     type="number"
                     value={recipeData.cookTime}
                     onChange={(e) => setRecipeData(prev => ({ ...prev, cookTime: parseInt(e.target.value) || 0 }))}
-              />
-            </div>
+                  />
+                </div>
 
-            <div>
+                <div>
                   <Label htmlFor="servings">عدد الحصص</Label>
                   <Input
                     id="servings"
-                type="number"
+                    type="number"
                     value={recipeData.servings}
                     onChange={(e) => setRecipeData(prev => ({ ...prev, servings: parseInt(e.target.value) || 1 }))}
-              />
-            </div>
-          </div>
+                  />
+                </div>
+              </div>
 
-          <div>
+              <div>
                 <Label htmlFor="difficulty">مستوى الصعوبة</Label>
                 <Select value={recipeData.difficulty} onValueChange={(value: any) => setRecipeData(prev => ({ ...prev, difficulty: value }))}>
                   <SelectTrigger>
@@ -348,8 +333,8 @@ export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: E
                 <Label htmlFor="image">رابط الصورة</Label>
                 <Input
                   id="image"
-                  value={recipeData.image || recipeData.imageUrl}
-                  onChange={(e) => setRecipeData(prev => ({ ...prev, image: e.target.value, imageUrl: e.target.value }))}
+                  value={recipeData.image}
+                  onChange={(e) => setRecipeData(prev => ({ ...prev, image: e.target.value }))}
                   placeholder="https://example.com/image.jpg"
                 />
               </div>
@@ -467,8 +452,8 @@ export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: E
                         value={instruction.description}
                         onChange={(e) => updateInstruction(index, 'description', e.target.value)}
                         placeholder="اكتب وصف الخطوة هنا..."
-              rows={3}
-            />
+                        rows={3}
+                      />
                     </div>
                     <div className="w-32">
                       <Label>الوقت (دقيقة)</Label>
@@ -625,7 +610,7 @@ export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: E
                     إضافة
                   </Button>
                 </div>
-          </div>
+              </div>
 
               <div>
                 <Label>الحشوات المقترحة</Label>
@@ -655,8 +640,8 @@ export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: E
                       }
                     }}
                   />
-            <Button
-              type="button"
+                  <Button
+                    type="button"
                     onClick={(e) => {
                       const input = e.currentTarget.previousElementSibling as HTMLInputElement
                       addSuggestedTopping(input.value)
@@ -674,11 +659,11 @@ export default function EditRecipeModal({ isOpen, onClose, onUpdate, recipe }: E
         <div className="flex items-center justify-end gap-2 p-6 border-t">
           <Button variant="outline" onClick={onClose}>
             إلغاء
-            </Button>
+          </Button>
           <Button onClick={handleSubmit} disabled={!recipeData.title.trim() || !recipeData.content.trim()}>
-            حفظ التغييرات
-            </Button>
-          </div>
+            إضافة الوصفة
+          </Button>
+        </div>
       </div>
     </div>
   )

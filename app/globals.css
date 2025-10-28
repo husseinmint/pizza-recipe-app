@@ -119,8 +119,70 @@
   * {
     @apply border-border outline-ring/50;
   }
+  
+  html {
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    direction: rtl;
+  }
+  
   body {
     @apply bg-background text-foreground;
+    direction: rtl;
+    text-align: right;
+  }
+  
+  /* RTL Support for Lists */
+  ul, ol {
+    direction: rtl;
+  }
+  
+  /* RTL Support for Inputs */
+  input, textarea, select {
+    text-align: right;
+  }
+  
+  /* RTL Support for Buttons */
+  button {
+    direction: rtl;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  /* Buttons Improved Styling */
+  button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Link hover effect */
+  a {
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  a:hover {
+    opacity: 0.8;
+  }
+  
+  /* Interactive elements cursor */
+  input[type="checkbox"],
+  input[type="radio"],
+  select {
+    cursor: pointer;
+  }
+  
+  /* Disabled elements */
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 }
 

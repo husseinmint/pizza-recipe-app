@@ -119,9 +119,9 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
   }
 
   return (
-    <div className="border border-border rounded-lg overflow-hidden flex flex-col h-full">
+    <div className="flex flex-col h-full w-full">
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-1 p-3 border-b border-border bg-secondary overflow-y-auto">
+      <div className="flex flex-wrap items-center gap-1 p-3 border border-border bg-secondary overflow-y-auto rounded-t-lg">
         {/* Text Formatting */}
         <Button
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -401,11 +401,13 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
       </div>
 
       {/* Editor */}
-      <EditorContent
-        editor={editor}
-        className="flex-1 overflow-y-auto p-4 text-foreground bg-background focus:outline-none prose prose-sm max-w-none min-h-0 prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-pre:bg-secondary prose-blockquote:text-foreground prose-li:text-foreground prose-table:text-foreground prose-th:text-foreground prose-td:text-foreground"
-        placeholder={placeholder}
-      />
+      <div className="flex-1 overflow-y-auto border-x border-b border-border">
+        <EditorContent
+          editor={editor}
+          className="p-4 text-foreground bg-background focus:outline-none prose prose-sm max-w-none prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-pre:bg-secondary prose-blockquote:text-foreground prose-li:text-foreground prose-table:text-foreground prose-th:text-foreground prose-td:text-foreground"
+          placeholder={placeholder}
+        />
+      </div>
     </div>
   )
 }

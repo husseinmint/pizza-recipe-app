@@ -2,47 +2,83 @@
 
 import { useState, useMemo, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
-import { Plus, ChevronRight, Star, StarOff, Download, Upload, Filter, Moon, Sun, Printer, Image } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Plus, ChevronRight, Download, Upload, Filter, Moon, Sun, Printer, Image, Star } from "lucide-react"
 import { Pizza, Bread, BowlFood, Cheese, FileText } from "@phosphor-icons/react"
 import RecipeDetail from "@/components/recipe-detail"
 import NotesSection from "@/components/notes-section"
-import AddRecipeModal from "@/components/add-recipe-modal-simple"
+import AddRecipeModal from "@/components/add-recipe-modal-advanced"
+import EditRecipeModal from "@/components/edit-recipe-modal"
 import NotesDetailView from "@/components/notes-detail-view"
-import { useLocalStorage } from "@/hooks/use-local-storage"
-import { useGitHubStorage } from "@/lib/github-api"
-import GitHubConfigComponent from "@/components/github-config"
 import ClientOnly from "@/components/client-only"
 import RichTextEditorClient from "@/components/rich-text-editor-client"
+import NoteForm from "@/components/note-form"
+import NoteCard from "@/components/note-card"
+import { NoteTemplate } from "@/components/note-templates"
+import { useLocalStorage } from "@/hooks/use-local-storage"
 
 interface Note {
   id: number
+  title?: string
   text: string
   html?: string
   createdAt: string
+  template?: NoteTemplate
 }
 
 interface Recipe {
   id: number
-  name: string
+  title: string
+  name?: string // للتوافق مع الكود القديم
+  description?: string
   content: string
   notes: Note[]
   createdAt: string
   updatedAt: string
-  category: 'Pizza' | 'Dough' | 'Sauce' | 'Toppings' | 'Other'
+  category?: 'Pizza' | 'Dough' | 'Sauce' | 'Toppings' | 'Other'
+  cuisine?: string
+  difficulty?: 'easy' | 'medium' | 'hard'
+  prepTime?: number
+  cookTime?: number
+  servings?: number
   isFavorite?: boolean
   viewCount?: number
   lastViewed?: string
+  image?: string
+  imageUrl?: string // للتوافق مع الكود القديم
+  ingredients?: Array<{
+    name: string
+    amount: string
+    unit: string
+  }>
+  instructions?: Array<{
+    step: number
+    description: string
+    time: number
+  }>
+  tags?: string[]
+  nutrition?: {
+    calories: number
+    protein: number
+    carbs: number
+    fat: number
+    fiber: number
+  }
+  flavor?: string
+  usage?: string
+  suggestedToppings?: string[]
 }
 
 interface GeneralNote {
   id: number
+  title?: string
   text: string
   html?: string
   createdAt: string
   updatedAt: string
   tags: string[]
   isPinned?: boolean
-  template?: string
+  template?: NoteTemplate
   linkedRecipeId?: number
   imageUrl?: string
 }
@@ -51,6 +87,7 @@ export default function Home() {
   const [recipes, setRecipes] = useLocalStorage<Recipe[]>("pizza-recipes", [
     {
       id: 1,
+      title: "Classic Margherita",
       name: "Classic Margherita",
       content:
         "Dough:\n- 500g flour\n- 300ml water\n- 10g salt\n- 5g yeast\n\nInstructions:\n1. Mix flour and water\n2. Add salt and yeast\n3. Knead for 10 minutes\n4. Let ferment for 24 hours\n5. Shape and top with tomato, mozzarella, basil\n6. Bake at 300°C for 90 seconds",
@@ -68,25 +105,38 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
-  const [showFavorites, setShowFavorites] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [editingRecipe, setEditingRecipe] = useState<Recipe | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
-  const [githubConfig, setGithubConfig] = useLocalStorage<any>("github-config", null)
-  const [showGitHubConfig, setShowGitHubConfig] = useState(false)
-  const [noteSearchTerm, setNoteSearchTerm] = useState("")
-  const [selectedNoteTag, setSelectedNoteTag] = useState<string>("all")
   const [showPinnedNotes, setShowPinnedNotes] = useState(false)
   const [isClient, setIsClient] = useState(false)
   const [isCreatingNote, setIsCreatingNote] = useState(false)
   const [newNoteContent, setNewNoteContent] = useState("")
   const [newNoteTags, setNewNoteTags] = useState<string[]>([])
+  const [showNoteForm, setShowNoteForm] = useState(false)
+  const [editingNote, setEditingNote] = useState<{ id: number; title: string; content: string; template: NoteTemplate } | null>(null)
+  const [noteFormMode, setNoteFormMode] = useState<'create' | 'edit'>('create')
   const [isDarkMode, setIsDarkMode] = useLocalStorage("dark-mode", false)
-  const [lastBackupTime, setLastBackupTime] = useLocalStorage("last-backup", null)
   
-  const { saveToGitHub, loadFromGitHub, isLoading: githubLoading, error: githubError } = useGitHubStorage(githubConfig)
 
   useEffect(() => {
     setIsClient(true)
-  }, [])
+    
+    // Listen for note form events from RecipeDetail
+    const handleOpenNoteForm = (event: CustomEvent) => {
+      const { recipeId } = event.detail
+      setSelectedRecipe(recipes.find(r => r.id === recipeId) || null)
+      setNoteFormMode('create')
+      setEditingNote(null)
+      setShowNoteForm(true)
+    }
+    
+    window.addEventListener('openNoteForm', handleOpenNoteForm as EventListener)
+    
+    return () => {
+      window.removeEventListener('openNoteForm', handleOpenNoteForm as EventListener)
+    }
+  }, [recipes])
 
   // Dark mode toggle
   useEffect(() => {
@@ -101,32 +151,61 @@ export default function Home() {
 
   const filteredRecipes = useMemo(() => {
     return recipes.filter((recipe) => {
-      const searchLower = searchTerm.toLowerCase()
-      const matchesSearch = recipe.name.toLowerCase().includes(searchLower) ||
-                           recipe.content.toLowerCase().includes(searchLower) ||
-                           recipe.category.toLowerCase().includes(searchLower)
-      
-      const matchesFavorites = !showFavorites || recipe.isFavorite
+      const recipeName = recipe.title || recipe.name || ''
+      const matchesSearch = recipeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        recipe.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (recipe.description && recipe.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (recipe.tags && recipe.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
       const matchesCategory = selectedCategory === "all" || recipe.category === selectedCategory
       
-      return matchesSearch && matchesFavorites && matchesCategory
+      return matchesSearch && matchesCategory
     })
-  }, [recipes, searchTerm, showFavorites, selectedCategory])
+  }, [recipes, searchTerm, selectedCategory])
 
-  const handleAddRecipe = (name: string, content: string, category: string = 'Other') => {
+  const handleAddRecipe = (recipeData: any) => {
     const newRecipe: Recipe = {
       id: Math.max(...recipes.map((r) => r.id), 0) + 1,
-      name,
-      content,
+      title: recipeData.title,
+      name: recipeData.title, // للتوافق مع الكود القديم
+      description: recipeData.description,
+      content: recipeData.content,
       notes: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      category: category as Recipe['category'],
+      category: recipeData.category as Recipe['category'],
+      cuisine: recipeData.cuisine,
+      difficulty: recipeData.difficulty,
+      prepTime: recipeData.prepTime,
+      cookTime: recipeData.cookTime,
+      servings: recipeData.servings,
       isFavorite: false,
       viewCount: 0,
+      image: recipeData.image,
+      imageUrl: recipeData.image, // للتوافق مع الكود القديم
+      ingredients: recipeData.ingredients,
+      instructions: recipeData.instructions,
+      tags: recipeData.tags,
+      nutrition: recipeData.nutrition,
+      flavor: recipeData.flavor,
+      usage: recipeData.usage,
+      suggestedToppings: recipeData.suggestedToppings,
     }
     setRecipes([newRecipe, ...recipes])
     setIsAddModalOpen(false)
+  }
+
+  const handleEditRecipe = (recipe: Recipe) => {
+    setEditingRecipe(recipe)
+    setIsEditModalOpen(true)
+  }
+
+  const handleUpdateRecipe = (updatedRecipe: Recipe) => {
+    setRecipes(recipes.map(r => r.id === updatedRecipe.id ? updatedRecipe : r))
+    if (selectedRecipe?.id === updatedRecipe.id) {
+      setSelectedRecipe(updatedRecipe)
+    }
+    setIsEditModalOpen(false)
+    setEditingRecipe(null)
   }
 
   const handleDeleteRecipe = (id: number) => {
@@ -136,18 +215,16 @@ export default function Home() {
     }
   }
 
-  const handleUpdateRecipe = (updatedRecipe: Recipe) => {
-    setRecipes(recipes.map((r) => (r.id === updatedRecipe.id ? updatedRecipe : r)))
-    setSelectedRecipe(updatedRecipe)
-  }
 
-  const handleAddNote = (recipeId: number, noteText: string) => {
+  const handleAddNote = (recipeId: number, noteData: { title: string; content: string; template: NoteTemplate }) => {
     const updatedRecipes = recipes.map((r) => {
       if (r.id === recipeId) {
         const newNote: Note = {
           id: Math.max(...(r.notes?.map((n) => n.id) || [0]), 0) + 1,
-          text: noteText,
-          html: noteText,
+          title: noteData.title,
+          text: noteData.content,
+          html: noteData.content,
+          template: noteData.template,
           createdAt: new Date().toISOString(),
         }
         return {
@@ -179,16 +256,17 @@ export default function Home() {
     if (updated) setSelectedRecipe(updated)
   }
 
-  const handleAddGeneralNote = (noteText: string, tags: string[] = [], template?: string, linkedRecipeId?: number) => {
+  const handleAddGeneralNote = (noteData: { title: string; content: string; template: NoteTemplate; tag?: string }, tags: string[] = [], linkedRecipeId?: number) => {
     const newNote: GeneralNote = {
       id: Math.max(...generalNotes.map((n) => n.id), 0) + 1,
-      text: noteText,
-      html: noteText,
+      title: noteData.title,
+      text: noteData.content,
+      html: noteData.content,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      tags,
+      tags: noteData.tag ? [noteData.tag] : tags,
       isPinned: false,
-      template,
+      template: noteData.template,
       linkedRecipeId,
     }
     setGeneralNotes([newNote, ...generalNotes])
@@ -198,15 +276,17 @@ export default function Home() {
     setGeneralNotes(generalNotes.filter((n) => n.id !== id))
   }
 
-  const handleUpdateGeneralNote = (id: number, noteText: string, tags?: string[]) => {
+  const handleUpdateGeneralNote = (id: number, noteData: { title: string; content: string; template: NoteTemplate; tag?: string }, tags?: string[]) => {
     setGeneralNotes(
       generalNotes.map((n) =>
         n.id === id
           ? {
               ...n,
-              text: noteText,
-              html: noteText,
-              tags: tags || n.tags,
+              title: noteData.title,
+              text: noteData.content,
+              html: noteData.content,
+              template: noteData.template,
+              tags: noteData.tag ? [noteData.tag] : tags || n.tags,
               updatedAt: new Date().toISOString(),
             }
           : n,
@@ -234,7 +314,21 @@ export default function Home() {
 
   const handleCreateNote = () => {
     if (newNoteContent.trim()) {
-      handleAddGeneralNote(newNoteContent, newNoteTags)
+      const defaultTemplate: NoteTemplate = {
+        id: 'info',
+        name: 'معلومة',
+        type: 'info',
+        icon: null,
+        bgColor: 'bg-blue-50',
+        borderColor: 'border-blue-200',
+        textColor: 'text-blue-800',
+        iconColor: 'text-blue-600'
+      }
+      handleAddGeneralNote({
+        title: '',
+        content: newNoteContent,
+        template: defaultTemplate
+      }, newNoteTags)
       setNewNoteContent("")
       setNewNoteTags([])
       setIsCreatingNote(false)
@@ -242,15 +336,60 @@ export default function Home() {
   }
 
   const handleStartCreatingNote = () => {
-    setIsCreatingNote(true)
-    setNewNoteContent("")
-    setNewNoteTags([])
+    setNoteFormMode('create')
+    setEditingNote(null)
+    setShowNoteForm(true)
   }
 
-  const handleSelectTemplate = (template: any) => {
-    setNewNoteContent(template.content)
-    setNewNoteTags(template.tags)
-    setIsCreatingNote(true)
+  const handleEditNote = (note: any) => {
+    setNoteFormMode('edit')
+    setEditingNote({
+      id: note.id,
+      title: note.title || '',
+      content: note.text,
+      template: note.template
+    })
+    setShowNoteForm(true)
+  }
+
+  const handleSaveNote = (noteData: { title: string; content: string; template: NoteTemplate }) => {
+    if (noteFormMode === 'create') {
+      if (activeTab === 'notes') {
+        handleAddGeneralNote(noteData, newNoteTags)
+      } else if (selectedRecipe) {
+        handleAddNote(selectedRecipe.id, noteData)
+      }
+    } else if (noteFormMode === 'edit' && editingNote) {
+      if (activeTab === 'notes') {
+        handleUpdateGeneralNote(editingNote.id, noteData)
+      } else if (selectedRecipe) {
+        // Update recipe note
+        const updatedRecipes = recipes.map((r) => {
+          if (r.id === selectedRecipe.id) {
+            return {
+              ...r,
+              notes: r.notes.map((n) =>
+                n.id === editingNote.id
+                  ? {
+                      ...n,
+                      title: noteData.title,
+                      text: noteData.content,
+                      html: noteData.content,
+                      template: noteData.template,
+                    }
+                  : n
+              ),
+            }
+          }
+          return r
+        })
+        setRecipes(updatedRecipes)
+        const updated = updatedRecipes.find((r) => r.id === selectedRecipe.id)
+        if (updated) setSelectedRecipe(updated)
+      }
+    }
+    setShowNoteForm(false)
+    setEditingNote(null)
   }
 
   const handleToggleFavorite = (id: number) => {
@@ -288,7 +427,17 @@ export default function Home() {
         try {
           const data = JSON.parse(e.target?.result as string)
           if (data.recipes && data.generalNotes) {
-            setRecipes(data.recipes)
+            // تحويل البيانات القديمة إلى التنسيق الجديد
+            const convertedRecipes = data.recipes.map((recipe: any) => ({
+              ...recipe,
+              title: recipe.title || recipe.name,
+              name: recipe.name || recipe.title,
+              imageUrl: recipe.imageUrl || recipe.image,
+              suggestedToppings: Array.isArray(recipe.suggestedToppings) 
+                ? recipe.suggestedToppings 
+                : recipe.suggestedToppings?.split(',').map((s: string) => s.trim()) || []
+            }))
+            setRecipes(convertedRecipes)
             setGeneralNotes(data.generalNotes)
             alert('Data imported successfully!')
           } else {
@@ -302,10 +451,11 @@ export default function Home() {
     }
   }
 
+
   const categories = ['all', 'Pizza', 'Dough', 'Sauce', 'Toppings', 'Other']
   const noteTags = ['all', 'Technique', 'Ingredient', 'Equipment', 'Timing', 'Substitution', 'Quality', 'Storage', 'Other']
   
-  const getCategoryIcon = (category: string) => {
+  const getCategoryIcon = (category?: string) => {
     switch (category) {
       case 'Pizza': return <Pizza size={16} />
       case 'Dough': return <Bread size={16} />
@@ -317,54 +467,17 @@ export default function Home() {
   
   const filteredNotes = useMemo(() => {
     return generalNotes.filter((note) => {
-      const searchLower = noteSearchTerm.toLowerCase()
-      const matchesSearch = noteSearchTerm === "" || 
-                           note.text.toLowerCase().includes(searchLower) ||
-                           note.tags.some(tag => tag.toLowerCase().includes(searchLower))
-      
-      const matchesTag = selectedNoteTag === "all" || note.tags.includes(selectedNoteTag)
       const matchesPinned = !showPinnedNotes || note.isPinned
       
-      return matchesSearch && matchesTag && matchesPinned
+      return matchesPinned
     }).sort((a, b) => {
       // Pinned notes first, then by date
       if (a.isPinned && !b.isPinned) return -1
       if (!a.isPinned && b.isPinned) return 1
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
-  }, [generalNotes, noteSearchTerm, selectedNoteTag, showPinnedNotes])
+  }, [generalNotes, showPinnedNotes])
 
-  // Auto-save to GitHub when data changes
-  useEffect(() => {
-    if (githubConfig && recipes.length > 0) {
-      const timeoutId = setTimeout(() => {
-        saveToGitHub(recipes, generalNotes)
-        setLastBackupTime(new Date().toISOString())
-      }, 10000) // Auto-save every 10 seconds
-
-      return () => clearTimeout(timeoutId)
-    }
-  }, [recipes, generalNotes, githubConfig])
-
-  // Load from GitHub on mount
-  useEffect(() => {
-    if (githubConfig) {
-      const loadData = async () => {
-        try {
-          const data = await loadFromGitHub()
-          if (data.recipes && data.recipes.length > 0) {
-            setRecipes(data.recipes)
-          }
-          if (data.generalNotes && data.generalNotes.length > 0) {
-            setGeneralNotes(data.generalNotes)
-          }
-        } catch (error) {
-          console.error('Failed to load from GitHub:', error)
-        }
-      }
-      loadData()
-    }
-  }, [githubConfig, loadFromGitHub])
 
   if (!isClient) {
     return (
@@ -397,7 +510,7 @@ export default function Home() {
                   : "bg-secondary text-foreground hover:bg-secondary/80"
               }`}
             >
-              Recipes
+              الوصفات
             </button>
             <button
               onClick={() => {
@@ -410,52 +523,37 @@ export default function Home() {
                   : "bg-secondary text-foreground hover:bg-secondary/80"
               }`}
             >
-              Notes
+              الملاحظات
             </button>
           </div>
 
-          {/* Search/Add Header */}
+          {/* Add Recipe Header */}
           {activeTab === "recipes" && (
             <div className="space-y-3">
               <div className="flex items-center justify-between gap-2">
-                <input
-                  type="text"
-                  placeholder="Search recipes..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="flex-1 px-3 py-2 bg-secondary text-foreground placeholder-muted-foreground rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-foreground"
-                />
                 <Button
-                  onClick={() => setIsAddModalOpen(true)}
-                  size="sm"
-                  className="bg-foreground hover:bg-foreground/90 text-background"
+                  onClick={() => window.location.href = '/add-recipe'}
+                  className="bg-foreground hover:bg-foreground/90 text-background flex items-center gap-2 w-full py-8"
                 >
                   <Plus size={18} />
+                  إضافة وصفة
                 </Button>
               </div>
               
-              {/* Filters */}
-              <div className="flex gap-2">
-                <Button
-                  onClick={() => setShowFavorites(!showFavorites)}
-                  size="sm"
-                  variant={showFavorites ? "default" : "outline"}
-                  className="text-xs"
-                >
-                  <Star size={14} className="mr-1" />
-                  Favorites
-                </Button>
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-2 py-1 bg-secondary text-foreground rounded text-xs border border-border"
-                >
-                  {categories.map(cat => (
-                    <option key={cat} value={cat}>
-                      {cat === 'all' ? 'All Categories' : cat}
-                    </option>
-                  ))}
-                </select>
+              {/* Category Filter */}
+              <div className="flex-1">
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <SelectTrigger className="h-10 text-sm w-full">
+                    <SelectValue placeholder="اختر تصنيف" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map(cat => (
+                      <SelectItem key={cat} value={cat} className="text-sm">
+                        {cat === 'all' ? 'جميع التصنيفات' : cat}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               
               {/* Export/Import */}
@@ -467,7 +565,7 @@ export default function Home() {
                   className="text-xs flex-1"
                 >
                   <Download size={14} className="mr-1" />
-                  Export
+                  تصدير
                 </Button>
                 <label className="flex-1">
                   <input
@@ -484,7 +582,7 @@ export default function Home() {
                   >
                     <span>
                       <Upload size={14} className="mr-1" />
-                      Import
+                      استيراد
                     </span>
                   </Button>
                 </label>
@@ -514,29 +612,8 @@ export default function Home() {
                 </div>
                 
                 {/* Backup Status */}
-                {lastBackupTime && (
-                  <p className="text-xs text-muted-foreground">
-                    Last backup: {new Date(lastBackupTime).toLocaleTimeString()}
-                  </p>
-                )}
               </div>
               
-              {/* GitHub Sync */}
-              <div className="space-y-2">
-                <GitHubConfigComponent 
-                  config={githubConfig} 
-                  onConfigChange={setGithubConfig}
-                />
-                {githubError && (
-                  <p className="text-xs text-destructive">❌ {githubError}</p>
-                )}
-                {githubLoading && (
-                  <p className="text-xs text-muted-foreground">🔄 Syncing with GitHub...</p>
-                )}
-                {githubConfig && !githubLoading && !githubError && (
-                  <p className="text-xs text-green-600">✅ Connected to GitHub</p>
-                )}
-              </div>
             </div>
           )}
         </div>
@@ -547,7 +624,7 @@ export default function Home() {
             // Recipes List
             <>
               {filteredRecipes.length === 0 ? (
-                <div className="p-4 text-center text-muted-foreground text-sm">No recipes found</div>
+                <div className="p-4 text-center text-muted-foreground text-sm">لم يتم العثور على وصفات</div>
               ) : (
                 <div className="divide-y divide-border">
                   {filteredRecipes.map((recipe) => (
@@ -562,7 +639,7 @@ export default function Home() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
                             {getCategoryIcon(recipe.category)}
-                            <h3 className="font-medium text-foreground truncate">{recipe.name}</h3>
+                            <h3 className="font-medium text-foreground truncate">{recipe.title || recipe.name}</h3>
                             {recipe.isFavorite && <Star size={14} className="text-yellow-500" />}
                           </div>
                           <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
@@ -579,38 +656,7 @@ export default function Home() {
           ) : (
             // Notes List
             <div className="space-y-3 p-4">
-              {/* Notes Search and Filters */}
-              <div className="space-y-2">
-                <input
-                  type="text"
-                  placeholder="Search notes..."
-                  value={noteSearchTerm}
-                  onChange={(e) => setNoteSearchTerm(e.target.value)}
-                  className="w-full px-3 py-2 bg-secondary text-foreground placeholder-muted-foreground rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-foreground"
-                />
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => setShowPinnedNotes(!showPinnedNotes)}
-                    size="sm"
-                    variant={showPinnedNotes ? "default" : "outline"}
-                    className="text-xs"
-                  >
-                    📌 Pinned
-                  </Button>
-                  <select
-                    value={selectedNoteTag}
-                    onChange={(e) => setSelectedNoteTag(e.target.value)}
-                    className="px-2 py-1 bg-secondary text-foreground rounded text-xs border border-border"
-                  >
-                    {noteTags.map(tag => (
-                      <option key={tag} value={tag}>
-                        {tag === 'all' ? 'All Tags' : tag}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              
+              {/* Tags Filter */}
               <NotesSection
                 notes={filteredNotes}
                 onAdd={handleAddGeneralNote}
@@ -621,8 +667,8 @@ export default function Home() {
                 onRemoveTag={handleRemoveNoteTag}
                 availableTags={noteTags.filter(t => t !== 'all')}
                 onCreateNote={handleStartCreatingNote}
-                onSelectTemplate={handleSelectTemplate}
               />
+              
             </div>
           )}
         </div>
@@ -636,6 +682,7 @@ export default function Home() {
               recipe={selectedRecipe}
               onUpdate={handleUpdateRecipe}
               onDelete={handleDeleteRecipe}
+              onEdit={handleEditRecipe}
               onAddNote={handleAddNote}
               onDeleteNote={handleDeleteNote}
             />
@@ -668,7 +715,7 @@ export default function Home() {
                 <RichTextEditorClient
                   value={newNoteContent}
                   onChange={setNewNoteContent}
-                  placeholder="Start writing your note..."
+                  placeholder="ابدأ في كتابة ملاحظتك..."
                 />
               </div>
               
@@ -721,6 +768,7 @@ export default function Home() {
             recipe={selectedRecipe}
             onUpdate={handleUpdateRecipe}
             onDelete={handleDeleteRecipe}
+            onEdit={handleEditRecipe}
             onAddNote={handleAddNote}
             onDeleteNote={handleDeleteNote}
             onBack={() => setSelectedRecipe(null)}
@@ -728,8 +776,37 @@ export default function Home() {
         </div>
       )}
 
-      {/* Add Recipe Modal */}
-      <AddRecipeModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} onAdd={handleAddRecipe} />
+        {/* Note Form Modal */}
+        <NoteForm
+          isOpen={showNoteForm}
+          onClose={() => {
+            setShowNoteForm(false)
+            setEditingNote(null)
+          }}
+          onSave={handleSaveNote}
+          initialTitle={editingNote?.title || ''}
+          initialContent={editingNote?.content || ''}
+          initialTemplate={editingNote?.template}
+          mode={noteFormMode}
+        />
+
+        {/* Add Recipe Modal */}
+        <AddRecipeModal 
+          isOpen={isAddModalOpen} 
+          onClose={() => setIsAddModalOpen(false)} 
+          onAdd={handleAddRecipe} 
+        />
+
+        {/* Edit Recipe Modal */}
+        <EditRecipeModal
+          isOpen={isEditModalOpen}
+          onClose={() => {
+            setIsEditModalOpen(false)
+            setEditingRecipe(null)
+          }}
+          onUpdate={handleUpdateRecipe}
+          recipe={editingRecipe}
+        />
     </main>
   )
 }

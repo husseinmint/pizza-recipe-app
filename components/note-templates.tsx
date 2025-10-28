@@ -2,136 +2,119 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { FileText, Clock, ChefHat, Thermometer, Package, Lightbulb } from "lucide-react"
+import { Info, AlertTriangle, CheckCircle, XCircle, Moon } from "lucide-react"
 
-interface NoteTemplate {
+export interface NoteTemplate {
   id: string
   name: string
-  description: string
-  content: string
-  tags: string[]
-  icon: React.ComponentType<{ size?: number; className?: string }>
+  type: 'info' | 'success' | 'warning' | 'danger' | 'dark'
+  icon: React.ReactNode
+  bgColor: string
+  borderColor: string
+  textColor: string
+  iconColor: string
 }
 
-const templates: NoteTemplate[] = [
+const noteTemplates: NoteTemplate[] = [
   {
-    id: "technique",
-    name: "Technique Note",
-    description: "Cooking techniques and methods",
-    content: "<h2>Technique:</h2><p></p><h3>Steps:</h3><ol><li></li><li></li><li></li></ol><h3>Tips:</h3><ul><li></li><li></li></ul><h3>Common Mistakes:</h3><ul><li></li><li></li></ul>",
-    tags: ["Technique"],
-    icon: ChefHat
+    id: 'info',
+    name: 'معلومة',
+    type: 'info',
+    icon: <Info size={16} />,
+    bgColor: 'bg-slate-50 dark:bg-slate-900/30',
+    borderColor: 'border-slate-200 dark:border-slate-700',
+    textColor: 'text-slate-700 dark:text-slate-300',
+    iconColor: 'text-slate-500 dark:text-slate-400'
   },
   {
-    id: "ingredient",
-    name: "Ingredient Note",
-    description: "Ingredient information and substitutions",
-    content: "<h2>Ingredient:</h2><p></p><h3>Quality Indicators:</h3><ul><li></li><li></li></ul><h3>Storage:</h3><ul><li></li></ul><h3>Substitutions:</h3><ul><li></li><li></li></ul><h3>Best Sources:</h3><ul><li></li></ul>",
-    tags: ["Ingredient"],
-    icon: Package
+    id: 'success',
+    name: 'نجاح',
+    type: 'success',
+    icon: <CheckCircle size={16} />,
+    bgColor: 'bg-emerald-50/50 dark:bg-emerald-950/30',
+    borderColor: 'border-emerald-200/50 dark:border-emerald-800/50',
+    textColor: 'text-emerald-700 dark:text-emerald-400',
+    iconColor: 'text-emerald-600 dark:text-emerald-500'
   },
   {
-    id: "timing",
-    name: "Timing Note",
-    description: "Cooking times and schedules",
-    content: "<h2>Process:</h2><p></p><h3>Timeline:</h3><ul><li><strong>Prep:</strong> </li><li><strong>Cook:</strong> </li><li><strong>Rest:</strong> </li></ul><h3>Key Checkpoints:</h3><ul><li></li><li></li></ul><h3>Signs of Doneness:</h3><ul><li></li></ul>",
-    tags: ["Timing"],
-    icon: Clock
+    id: 'warning',
+    name: 'تحذير',
+    type: 'warning',
+    icon: <AlertTriangle size={16} />,
+    bgColor: 'bg-amber-50/50 dark:bg-amber-950/30',
+    borderColor: 'border-amber-200/50 dark:border-amber-800/50',
+    textColor: 'text-amber-700 dark:text-amber-400',
+    iconColor: 'text-amber-600 dark:text-amber-500'
   },
   {
-    id: "temperature",
-    name: "Temperature Note",
-    description: "Temperature settings and monitoring",
-    content: "<h2>Process:</h2><p></p><h3>Temperature Settings:</h3><ul><li><strong>Oven:</strong> </li><li><strong>Surface:</strong> </li></ul><h3>Monitoring:</h3><ul><li><strong>Target:</strong> </li><li><strong>Signs:</strong> </li></ul><h3>Troubleshooting:</h3><ul><li>Too hot: </li><li>Too cold: </li></ul>",
-    tags: ["Equipment"],
-    icon: Thermometer
+    id: 'danger',
+    name: 'خطر',
+    type: 'danger',
+    icon: <XCircle size={16} />,
+    bgColor: 'bg-rose-50/50 dark:bg-rose-950/30',
+    borderColor: 'border-rose-200/50 dark:border-rose-800/50',
+    textColor: 'text-rose-700 dark:text-rose-400',
+    iconColor: 'text-rose-600 dark:text-rose-500'
   },
   {
-    id: "substitution",
-    name: "Substitution Note",
-    description: "Ingredient substitutions and alternatives",
-    content: "<h2>Original:</h2><p></p><h3>Substitutions:</h3><ol><li><strong>Best:</strong>  (ratio: )</li><li><strong>Good:</strong>  (ratio: )</li><li><strong>Emergency:</strong>  (ratio: )</li></ol><h3>Notes:</h3><ul><li></li><li></li></ul>",
-    tags: ["Substitution"],
-    icon: Lightbulb
-  },
-  {
-    id: "quality",
-    name: "Quality Note",
-    description: "Quality assessment and standards",
-    content: "<h2>Item:</h2><p></p><h3>Quality Standards:</h3><ul><li><strong>Appearance:</strong> </li><li><strong>Texture:</strong> </li><li><strong>Aroma:</strong> </li><li><strong>Taste:</strong> </li></ul><h3>Red Flags:</h3><ul><li></li><li></li></ul><h3>Best Practices:</h3><ul><li></li></ul>",
-    tags: ["Quality"],
-    icon: FileText
+    id: 'dark',
+    name: 'داكن',
+    type: 'dark',
+    icon: <Moon size={16} />,
+    bgColor: 'bg-zinc-100 dark:bg-zinc-900/50',
+    borderColor: 'border-zinc-300 dark:border-zinc-700',
+    textColor: 'text-zinc-700 dark:text-zinc-300',
+    iconColor: 'text-zinc-600 dark:text-zinc-400'
   }
 ]
 
 interface NoteTemplatesProps {
-  onSelectTemplate: (template: NoteTemplate) => void
+  isOpen: boolean
   onClose: () => void
+  onSelectTemplate: (template: NoteTemplate) => void
 }
 
-export default function NoteTemplates({ onSelectTemplate, onClose }: NoteTemplatesProps) {
-  const [selectedTemplate, setSelectedTemplate] = useState<NoteTemplate | null>(null)
-
-  const handleSelect = (template: NoteTemplate) => {
-    onSelectTemplate(template)
-    onClose()
-  }
-
-  const handleConfirm = () => {
-    if (selectedTemplate) {
-      onSelectTemplate(selectedTemplate)
-      onClose()
-    }
-  }
+export default function NoteTemplates({ isOpen, onClose, onSelectTemplate }: NoteTemplatesProps) {
+  if (!isOpen) return null
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Note Templates</h3>
-        <Button onClick={onClose} variant="ghost" size="sm">
-          ✕
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {templates.map((template) => {
-          const Icon = template.icon
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div className="bg-background rounded-lg border border-border shadow-lg max-w-md w-full">
+        <div className="p-6">
+          <h2 className="text-lg font-semibold text-foreground mb-4">اختر قالب الملاحظة</h2>
           
-          return (
-            <Card
-              key={template.id}
-              className="p-4 cursor-pointer transition-colors border-border hover:border-foreground/50 hover:bg-secondary/50 hover:shadow-md"
-              onClick={() => handleSelect(template)}
-            >
-              <div className="flex items-start gap-3">
-                <Icon size={20} className="text-foreground mt-1" />
-                <div className="flex-1">
-                  <h4 className="font-medium text-foreground">{template.name}</h4>
-                  <p className="text-sm text-muted-foreground mt-1">{template.description}</p>
-                  <div className="flex flex-wrap gap-1 mt-2">
-                    {template.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-1 bg-secondary text-xs text-muted-foreground rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+          <div className="space-y-3">
+            {noteTemplates.map((template) => (
+              <button
+                key={template.id}
+                onClick={() => {
+                  onSelectTemplate(template)
+                  onClose()
+                }}
+                className={`w-full p-4 rounded-lg border-2 transition-all hover:scale-105 ${template.bgColor} ${template.borderColor} ${template.textColor}`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`${template.iconColor}`}>
+                    {template.icon}
+                  </div>
+                  <div className="text-left">
+                    <h3 className="font-medium">{template.name}</h3>
+                    <p className="text-sm opacity-75">قالب {template.name}</p>
                   </div>
                 </div>
-              </div>
-            </Card>
-          )
-        })}
-      </div>
-
-      <div className="text-center">
-        <p className="text-sm text-muted-foreground mb-2">Click any template to use it</p>
-        <Button onClick={onClose} variant="outline" size="sm">
-          Cancel
-        </Button>
+              </button>
+            ))}
+          </div>
+          
+          <div className="flex justify-end mt-6">
+            <Button onClick={onClose} variant="outline">
+              إلغاء
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
+
+export { noteTemplates }
