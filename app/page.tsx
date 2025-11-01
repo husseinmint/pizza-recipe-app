@@ -125,7 +125,9 @@ export default function Home() {
     
     // تحميل الصلصات تلقائياً عند فتح التطبيق
     loadSauceData()
-    
+  }, []) // Empty dependency array - run only once on mount
+
+  useEffect(() => {
     // Listen for note form events from RecipeDetail
     const handleOpenNoteForm = (event: CustomEvent) => {
       const { recipeId } = event.detail
@@ -154,16 +156,33 @@ export default function Home() {
   }, [isDarkMode])
 
   const filteredRecipes = useMemo(() => {
-    return recipes.filter((recipe) => {
+    const filtered = recipes.filter((recipe) => {
       const recipeName = recipe.title || recipe.name || ''
       const matchesSearch = recipeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        recipe.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (recipe.content && recipe.content.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (recipe.description && recipe.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (recipe.tags && recipe.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
       const matchesCategory = selectedCategory === "all" || recipe.category === selectedCategory
       
       return matchesSearch && matchesCategory
     })
+    
+    // Debug logging
+    if (recipes.length > 0) {
+      console.log('🔍 Filtered Recipes Debug:', {
+        totalRecipes: recipes.length,
+        selectedCategory,
+        searchTerm,
+        filteredCount: filtered.length,
+        recipesByCategory: {
+          all: recipes.filter((r: Recipe) => !r.category || r.category === selectedCategory).length,
+          Sauce: recipes.filter((r: Recipe) => r.category === 'Sauce').length,
+          Pizza: recipes.filter((r: Recipe) => r.category === 'Pizza').length,
+        }
+      })
+    }
+    
+    return filtered
   }, [recipes, searchTerm, selectedCategory])
 
   const handleAddRecipe = async (recipeData: any) => {
@@ -476,36 +495,60 @@ export default function Home() {
   }
 
   const loadSauceData = async () => {
-    if (saucesLoaded) return // تجنب التحميل المتكرر
+    if (saucesLoaded) {
+      console.log('⚠️ الصلصات تم تحميلها مسبقاً')
+      return // تجنب التحميل المتكرر
+    }
     
     try {
+      console.log('🔄 بدء تحميل بيانات الصلصات...')
       const response = await fetch('/sauce.json')
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
       const data = await response.json()
       
-      if (data.recipes) {
+      console.log('📦 بيانات JSON محملة:', { recipesCount: data.recipes?.length })
+      
+      if (data.recipes && data.recipes.length > 0) {
         // تحويل البيانات من sauce.json إلى التنسيق المطلوب
         const convertedRecipes = data.recipes.map((recipe: any) => ({
           ...recipe,
           name: recipe.title, // للتوافق مع الكود القديم
           imageUrl: recipe.image, // للتوافق مع الكود القديم
+          category: 'Sauce' as const, // تأكد من أن التصنيف هو Sauce
           notes: recipe.notes || [],
           isFavorite: false,
           viewCount: 0,
-          lastViewed: undefined
+          lastViewed: undefined,
+          createdAt: recipe.createdAt || new Date().toISOString(),
+          updatedAt: recipe.updatedAt || new Date().toISOString(),
         }))
+        
+        console.log('🔄 تحويل الوصفات:', convertedRecipes.length, 'وصفة')
         
         // دمج الصلصات مع الوصفات الموجودة
         setRecipes(prevRecipes => {
+          console.log('📋 الوصفات الموجودة مسبقاً:', prevRecipes.length)
           const existingIds = new Set(prevRecipes.map(r => r.id))
           const newSauces = convertedRecipes.filter((recipe: any) => !existingIds.has(recipe.id))
-          return [...newSauces, ...prevRecipes]
+          console.log('➕ وصفات جديدة لإضافتها:', newSauces.length)
+          console.log('🆔 IDs الموجودة مسبقاً:', Array.from(existingIds))
+          console.log('🆔 IDs الجديدة:', newSauces.map((r: any) => r.id))
+          
+          const result = [...newSauces, ...prevRecipes]
+          console.log('✅ إجمالي الوصفات بعد الدمج:', result.length)
+          return result
         })
         
         setSaucesLoaded(true)
-        console.log(`تم تحميل ${convertedRecipes.length} وصفة صلصة بنجاح!`)
+        console.log(`✅ تم تحميل ${convertedRecipes.length} وصفة صلصة بنجاح!`)
+      } else {
+        console.warn('⚠️ لا توجد وصفات في sauce.json')
       }
     } catch (error) {
-      console.error('خطأ في تحميل بيانات الصلصات:', error)
+      console.error('❌ خطأ في تحميل بيانات الصلصات:', error)
+      setSaucesLoaded(false) // إعادة تعيين للسماح بالمحاولة مرة أخرى
     }
   }
 
