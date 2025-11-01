@@ -16,6 +16,7 @@ import NoteForm from "@/components/note-form"
 import NoteCard from "@/components/note-card"
 import { NoteTemplate } from "@/components/note-templates"
 import { useLocalStorage } from "@/hooks/use-local-storage"
+import { useGitHubStorage, GitHubConfig } from "@/lib/github-api"
 
 interface Note {
   id: number
@@ -119,13 +120,81 @@ export default function Home() {
   const [noteFormMode, setNoteFormMode] = useState<'create' | 'edit'>('create')
   const [isDarkMode, setIsDarkMode] = useLocalStorage("dark-mode", false)
   
+  // إعداد تكوين GitHub من متغيرات البيئة
+  const [githubConfig] = useState<GitHubConfig | null>(() => {
+    if (typeof window !== 'undefined') {
+      return {
+        username: process.env.NEXT_PUBLIC_GITHUB_OWNER || '',
+        repository: process.env.NEXT_PUBLIC_GITHUB_REPO || '',
+        token: process.env.NEXT_PUBLIC_GITHUB_TOKEN || ''
+      }
+    }
+    return null
+  })
+  
+  // استخدام hook المزامنة مع GitHub
+  const { saveToGitHub, loadFromGitHub, isLoading: isGitHubLoading, error: githubError } = useGitHubStorage(githubConfig)
 
   useEffect(() => {
     setIsClient(true)
+  }, [])
+
+  // تحميل الصلصات بعد التأكد من hydration
+  useEffect(() => {
+    if (!isClient) return // انتظر حتى يكون client-side
+    if (saucesLoaded) return // لا تحمل مرتين
     
-    // تحميل الصلصات تلقائياً عند فتح التطبيق
-    loadSauceData()
-  }, []) // Empty dependency array - run only once on mount
+    // انتظر أكثر للتأكد من اكتمال hydration تماماً
+    const timer = setTimeout(() => {
+      console.log('🎯 استدعاء loadSauceData بعد hydration')
+      console.log('📊 الوصفات الحالية قبل التحميل:', recipes.length)
+      loadSauceData()
+    }, 500) // زيادة التأخير إلى 500ms للتأكد من اكتمال hydration
+    
+    return () => clearTimeout(timer)
+  }, [isClient]) // يعمل مرة واحدة عند اكتمال client-side hydration
+  
+  // تحميل الوصفات من GitHub عند بدء التطبيق
+  useEffect(() => {
+    if (!isClient || !githubConfig) return
+    
+    const loadRecipesFromGitHub = async () => {
+      try {
+        const data = await loadFromGitHub()
+        if (data && data.recipes && data.recipes.length > 0) {
+          setRecipes(data.recipes)
+        }
+        if (data && data.generalNotes && data.generalNotes.length > 0) {
+          setGeneralNotes(data.generalNotes)
+        }
+      } catch (error) {
+        console.error('فشل تحميل الوصفات من GitHub:', error)
+      }
+    }
+    
+    loadRecipesFromGitHub()
+  }, [isClient, githubConfig, loadFromGitHub])
+  
+  // حفظ الوصفات في GitHub عند تغييرها
+  useEffect(() => {
+    if (!isClient || !githubConfig) return
+    
+    const saveRecipesToGitHub = async () => {
+      try {
+        await saveToGitHub(recipes, generalNotes)
+        console.log('✅ تم حفظ الوصفات في GitHub بنجاح')
+      } catch (error) {
+        console.error('❌ فشل حفظ الوصفات في GitHub:', error)
+      }
+    }
+    
+    // استخدام مؤقت لتجنب الحفظ المتكرر
+    const timer = setTimeout(() => {
+      saveRecipesToGitHub()
+    }, 2000)
+    
+    return () => clearTimeout(timer)
+  }, [recipes, generalNotes, isClient, githubConfig, saveToGitHub])
 
   useEffect(() => {
     // Listen for note form events from RecipeDetail
@@ -162,7 +231,10 @@ export default function Home() {
         (recipe.content && recipe.content.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (recipe.description && recipe.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (recipe.tags && recipe.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
-      const matchesCategory = selectedCategory === "all" || recipe.category === selectedCategory
+      
+      // تصحيح المشكلة: تعديل شرط تصفية الفئات
+      const matchesCategory = selectedCategory === "all" || 
+        (recipe.category && recipe.category.toLowerCase() === selectedCategory.toLowerCase())
       
       return matchesSearch && matchesCategory
     })
@@ -175,7 +247,7 @@ export default function Home() {
         searchTerm,
         filteredCount: filtered.length,
         recipesByCategory: {
-          all: recipes.filter((r: Recipe) => !r.category || r.category === selectedCategory).length,
+          all: recipes.length,
           Sauce: recipes.filter((r: Recipe) => r.category === 'Sauce').length,
           Pizza: recipes.filter((r: Recipe) => r.category === 'Pizza').length,
         }
@@ -500,6 +572,11 @@ export default function Home() {
       return // تجنب التحميل المتكرر
     }
     
+    if (!isClient) {
+      console.log('⏳ انتظار client-side hydration...')
+      return
+    }
+    
     try {
       console.log('🔄 بدء تحميل بيانات الصلصات...')
       const response = await fetch('/sauce.json')
@@ -527,22 +604,61 @@ export default function Home() {
         
         console.log('🔄 تحويل الوصفات:', convertedRecipes.length, 'وصفة')
         
-        // دمج الصلصات مع الوصفات الموجودة
-        setRecipes(prevRecipes => {
-          console.log('📋 الوصفات الموجودة مسبقاً:', prevRecipes.length)
-          const existingIds = new Set(prevRecipes.map(r => r.id))
-          const newSauces = convertedRecipes.filter((recipe: any) => !existingIds.has(recipe.id))
-          console.log('➕ وصفات جديدة لإضافتها:', newSauces.length)
-          console.log('🆔 IDs الموجودة مسبقاً:', Array.from(existingIds))
-          console.log('🆔 IDs الجديدة:', newSauces.map((r: any) => r.id))
+        // محاولة التحديث مباشرة - useLocalStorage سيتحقق من hydration
+        try {
+          setRecipes((prevRecipes) => {
+            console.log('📋 الوصفات الموجودة مسبقاً:', prevRecipes.length, prevRecipes)
+            const existingIds = new Set(prevRecipes.map(r => r.id))
+            const newSauces = convertedRecipes.filter((recipe: any) => !existingIds.has(recipe.id))
+            console.log('➕ وصفات جديدة لإضافتها:', newSauces.length)
+            console.log('🆔 IDs الموجودة مسبقاً:', Array.from(existingIds))
+            console.log('🆔 IDs الجديدة:', newSauces.map((r: any) => r.id))
+            
+            if (newSauces.length === 0) {
+              console.log('⚠️ جميع الوصفات موجودة مسبقاً - قد تكون في localStorage')
+              return prevRecipes
+            }
+            
+            const result = [...newSauces, ...prevRecipes]
+            console.log('✅ إجمالي الوصفات بعد الدمج:', result.length)
+            console.log('📊 تفاصيل الوصفات:', {
+              total: result.length,
+              sauces: result.filter(r => r.category === 'Sauce').length,
+              pizzas: result.filter(r => r.category === 'Pizza').length
+            })
+            return result
+          })
           
-          const result = [...newSauces, ...prevRecipes]
-          console.log('✅ إجمالي الوصفات بعد الدمج:', result.length)
-          return result
-        })
-        
-        setSaucesLoaded(true)
-        console.log(`✅ تم تحميل ${convertedRecipes.length} وصفة صلصة بنجاح!`)
+          setSaucesLoaded(true)
+          console.log(`✅ تم تحميل ${convertedRecipes.length} وصفة صلصة بنجاح!`)
+          
+          // إعادة محاولة بعد فترة للتأكد من التحديث
+          setTimeout(() => {
+            setRecipes((currentRecipes) => {
+              const currentIds = new Set(currentRecipes.map(r => r.id))
+              const missingSauces = convertedRecipes.filter((r: any) => !currentIds.has(r.id))
+              if (missingSauces.length > 0) {
+                console.log('🔄 إعادة محاولة إضافة', missingSauces.length, 'وصفة مفقودة')
+                return [...missingSauces, ...currentRecipes]
+              }
+              return currentRecipes
+            })
+          }, 500)
+        } catch (error) {
+          console.error('❌ خطأ في تحديث الوصفات:', error)
+          // محاولة مرة أخرى بعد فترة أطول
+          setTimeout(() => {
+            setRecipes((prevRecipes) => {
+              const existingIds = new Set(prevRecipes.map(r => r.id))
+              const newSauces = convertedRecipes.filter((recipe: any) => !existingIds.has(recipe.id))
+              if (newSauces.length > 0) {
+                console.log('🔄 محاولة ثانية - إضافة', newSauces.length, 'وصفة')
+                return [...newSauces, ...prevRecipes]
+              }
+              return prevRecipes
+            })
+          }, 1000)
+        }
       } else {
         console.warn('⚠️ لا توجد وصفات في sauce.json')
       }
