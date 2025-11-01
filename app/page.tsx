@@ -166,7 +166,7 @@ export default function Home() {
     })
   }, [recipes, searchTerm, selectedCategory])
 
-  const handleAddRecipe = (recipeData: any) => {
+  const handleAddRecipe = async (recipeData: any) => {
     const newRecipe: Recipe = {
       id: Math.max(...recipes.map((r) => r.id), 0) + 1,
       title: recipeData.title,
@@ -195,6 +195,16 @@ export default function Home() {
       suggestedToppings: recipeData.suggestedToppings,
     }
     setRecipes([newRecipe, ...recipes])
+    // Persist to category file (e.g., public/sauce.json)
+    try {
+      await fetch('/api/recipes/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recipe: newRecipe })
+      })
+    } catch (e) {
+      console.error('Failed to persist recipe file:', e)
+    }
     setIsAddModalOpen(false)
   }
 
@@ -203,10 +213,20 @@ export default function Home() {
     setIsEditModalOpen(true)
   }
 
-  const handleUpdateRecipe = (updatedRecipe: Recipe) => {
+  const handleUpdateRecipe = async (updatedRecipe: Recipe) => {
     setRecipes(recipes.map(r => r.id === updatedRecipe.id ? updatedRecipe : r))
     if (selectedRecipe?.id === updatedRecipe.id) {
       setSelectedRecipe(updatedRecipe)
+    }
+    // Persist update to category file
+    try {
+      await fetch('/api/recipes/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recipe: updatedRecipe })
+      })
+    } catch (e) {
+      console.error('Failed to persist recipe update:', e)
     }
     setIsEditModalOpen(false)
     setEditingRecipe(null)

@@ -125,12 +125,34 @@ npm run lint     # Run ESLint
 ## 🔧 Configuration
 
 ### Environment Variables
-No environment variables required - everything works out of the box!
+
+لتشغيل الحفظ على GitHub، أضف متغيرات البيئة التالية:
+
+1. **إنشاء Personal Access Token على GitHub:**
+   - اذهب إلى: https://github.com/settings/tokens
+   - اضغط "Generate new token" → "Generate new token (classic)"
+   - اختر الصلاحيات: `repo` (Full control of private repositories)
+   - انسخ الـ Token
+
+2. **إعداد متغيرات البيئة:**
+
+   أنشئ ملف `.env.local` في جذر المشروع:
+   ```bash
+   GITHUB_TOKEN=your_github_personal_access_token_here
+   GITHUB_OWNER=husseinmint
+   GITHUB_REPO=pizza-recipe-app
+   ```
+
+   أو في بيئة الإنتاج (مثل Vercel):
+   - Settings → Environment Variables
+   - أضف المتغيرات الثلاثة أعلاه
 
 ### GitHub Integration
-- Repository: Your GitHub repository name
-- Username: Your GitHub username  
-- Token: Personal Access Token with `repo` scope
+- **Repository**: اسم المستودع (افتراضي: `pizza-recipe-app`)
+- **Owner**: اسم المستخدم (افتراضي: `husseinmint`)
+- **Token**: Personal Access Token مع صلاحية `repo`
+
+**ملاحظة**: بدون `GITHUB_TOKEN`، سيتم الحفظ محلياً فقط (localStorage). عند إضافة الـ token، سيتم الحفظ تلقائياً على GitHub.
 
 ## 📁 Project Structure
 
